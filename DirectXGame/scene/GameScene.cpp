@@ -3,12 +3,14 @@
 #include <cassert>
 #include <ImGuiManager.h>
 #include "PrimitiveDrawer.h"
+#include "AxisIndicator.h"
 
 GameScene::GameScene() {}
 
 GameScene::~GameScene() {
 	delete sprite;
 	delete model;
+	delete debugCamera;
 }
 
 void GameScene::Initialize() {
@@ -28,6 +30,11 @@ void GameScene::Initialize() {
 	//voiceHandle = audio_->PlayWave(soundDateHandle,true);
 
 	PrimitiveDrawer::GetInstance()->SetViewProjection(&viewProjection);
+
+	debugCamera = new DebugCamera(1280, 720);
+
+	AxisIndicator::GetInstance()->SetVisible(true);
+	AxisIndicator::GetInstance()->SetTargetViewProjection(&debugCamera->GetViewProjection());
 }
 
 void GameScene::Update() { 
@@ -48,9 +55,11 @@ void GameScene::Update() {
 	ImGui::InputFloat3("InputFloat3", inputFloat3);
 	ImGui::SliderFloat3("SliderFloat3", inputFloat3, 0.0f, 1.0f);
 	ImGui::End();
-#endif // DEBUG
 
 	ImGui::ShowDemoWindow();
+#endif // DEBUG
+
+	debugCamera->Update();
 }
 
 void GameScene::Draw() {
@@ -82,7 +91,7 @@ void GameScene::Draw() {
 	/// ここに3Dオブジェクトの描画処理を追加できる
 	/// </summary>
 
-	model->Draw(worldTransform, viewProjection, textureHandle);
+	model->Draw(worldTransform, debugCamera->GetViewProjection(), textureHandle);
 
 	// 3Dオブジェクト描画後処理
 	Model::PostDraw();

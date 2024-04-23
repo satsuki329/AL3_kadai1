@@ -7,6 +7,7 @@
 #include "Sprite.h"
 #include "ViewProjection.h"
 #include "WorldTransform.h"
+#include "DebugCamera.h"
 
 /// <summary>
 /// ゲームシーン
@@ -21,6 +22,7 @@ public: // メンバ関数
 
 	Sprite* sprite = nullptr;
 	Model* model = nullptr;
+	DebugCamera* debugCamera = nullptr;
 
 	WorldTransform worldTransform;
 
