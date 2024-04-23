@@ -2,6 +2,7 @@
 #include "TextureManager.h"
 #include <cassert>
 #include <ImGuiManager.h>
+#include "PrimitiveDrawer.h"
 
 GameScene::GameScene() {}
 
@@ -25,6 +26,8 @@ void GameScene::Initialize() {
 	soundDateHandle = audio_->LoadWave("fanfare.wav");
 	//audio_->PlayWave(soundDateHandle);
 	//voiceHandle = audio_->PlayWave(soundDateHandle,true);
+
+	PrimitiveDrawer::GetInstance()->SetViewProjection(&viewProjection);
 }
 
 void GameScene::Update() { 
@@ -41,10 +44,10 @@ void GameScene::Update() {
 	}
 
 	#ifdef _DEBUG
-	//ImGui::Begin("Debug1");
+	ImGui::Begin("Debug1");
 	ImGui::InputFloat3("InputFloat3", inputFloat3);
 	ImGui::SliderFloat3("SliderFloat3", inputFloat3, 0.0f, 1.0f);
-	//ImGui::End();
+	ImGui::End();
 #endif // DEBUG
 
 	ImGui::ShowDemoWindow();
@@ -83,6 +86,8 @@ void GameScene::Draw() {
 
 	// 3Dオブジェクト描画後処理
 	Model::PostDraw();
+	PrimitiveDrawer::GetInstance()->DrawLine3d({0, 0, 0}, {0, 10, 0}, {1.0f, 0.0f, 0.0f, 1.0f});
+	
 #pragma endregion
 
 #pragma region 前景スプライト描画
