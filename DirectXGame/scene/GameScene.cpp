@@ -27,7 +27,7 @@ void GameScene::Initialize() {
 
 	soundDateHandle = audio_->LoadWave("fanfare.wav");
 	//audio_->PlayWave(soundDateHandle);
-	//voiceHandle = audio_->PlayWave(soundDateHandle,true);
+	voiceHandle = audio_->PlayWave(soundDateHandle,true);
 
 	PrimitiveDrawer::GetInstance()->SetViewProjection(&viewProjection);
 
@@ -75,7 +75,7 @@ void GameScene::Draw() {
 	/// ここに背景スプライトの描画処理を追加できる
 	/// </summary>
 	
-	//sprite->Draw();
+	sprite->Draw();
 
 	// スプライト描画後処理
 	Sprite::PostDraw();
