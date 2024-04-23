@@ -19,6 +19,13 @@ public: // メンバ関数
 	/// </summary>
 	GameScene();
 
+	Sprite* sprite = nullptr;
+	Model* model = nullptr;
+
+	WorldTransform worldTransform;
+
+	ViewProjection viewProjection;
+
 	/// <summary>
 	/// デストラクタ
 	/// </summary>
@@ -44,6 +51,11 @@ private: // メンバ変数
 	Input* input_ = nullptr;
 	Audio* audio_ = nullptr;
 
+	uint32_t textureHandle = 0;
+	uint32_t soundDateHandle = 0;
+	uint32_t voiceHandle = 0;
+
+	float inputFloat3[3] = {0, 0, 0};
 	/// <summary>
 	/// ゲームシーン用
 	/// </summary>
