@@ -1,4 +1,5 @@
 #include "Player.h"
+#include "TextureManager.h"
 #include <cassert>
 
 void Player::Initialize(Model* model, uint32_t texturehandle, ViewProjection* viewProjection) { 
@@ -6,6 +7,7 @@ void Player::Initialize(Model* model, uint32_t texturehandle, ViewProjection* vi
 	model_ = model;
 	texturehandle_ = texturehandle;
 	viewprojection_ = viewProjection;
+	worldtransform_.Initialize();
 }
 
 void Player::Update()
@@ -16,5 +18,5 @@ void Player::Update()
 
 void Player::Draw() 
 { 
-	model_->Draw(worldtransform_, viewprojection_, texturehandle_); 
+	model_->Draw(worldtransform_,*viewprojection_,texturehandle_);
 }

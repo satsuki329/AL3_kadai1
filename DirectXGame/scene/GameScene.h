@@ -22,7 +22,7 @@ public: // メンバ関数
 
 	Model* model_ = nullptr; 
 	WorldTransform worldtransform_;
-	ViewProjection* viewprojection_;
+	ViewProjection viewprojection_;
 	Player* player_ = nullptr;
 
 	/// <summary>

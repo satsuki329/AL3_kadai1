@@ -2,6 +2,7 @@
 
 #include "Model.h"
 #include "WorldTransform.h"
+#include "ViewProjection.h"
 
 class Player
 {
@@ -15,7 +16,7 @@ public:
 
 private:
 	WorldTransform worldtransform_;
-	ViewProjection* viewprojection_;
+	ViewProjection* viewprojection_ = nullptr;
 
 	Model* model_ = nullptr;
 

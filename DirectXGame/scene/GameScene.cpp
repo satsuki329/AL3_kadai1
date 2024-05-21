@@ -17,8 +17,9 @@ void GameScene::Initialize() {
 	texturehandle_ = TextureManager::Load("bed.png");
 	model_ = Model::Create();
 	worldtransform_.Initialize();
+	viewprojection_.Initialize();
 	player_ = new Player();
-	player_->Initialize(model_,texturehandle_,viewprojection_);
+	player_->Initialize(model_,texturehandle_,&viewprojection_);
 }
 
 void GameScene::Update() { 
