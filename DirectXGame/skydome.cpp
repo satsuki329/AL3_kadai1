@@ -13,4 +13,6 @@ void skydome::Update()
 
 }
 
-void skydome::Draw() { model_->Draw(worldTransform_, *viewprojection_); }
+void skydome::Draw() { 
+	model_->Draw(worldTransform_, *viewprojection_); 
+}
