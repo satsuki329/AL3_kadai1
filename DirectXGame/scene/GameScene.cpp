@@ -43,7 +43,7 @@ void GameScene::Initialize() {
 	player_->Initialize(model_, textureHandle_, &viewProjection_);
 
 	//スカイドームの生成
-	modelSkydome_ = Model::CreateFromOBJ("skydome", true);
+	//modelSkydome_ = Model::CreateFromOBJ("skydome", true);
 
 	// 要素数
 	const uint32_t kNumBlockVirtical = 10;

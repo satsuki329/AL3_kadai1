@@ -110,6 +110,7 @@
     <ClCompile Include="base\DirectXCommon.cpp" />
     <ClCompile Include="base\WinApp.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MapChipField.cpp" />
     <ClCompile Include="scene\GameScene.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="WorldTransform.cpp" />
@@ -149,6 +150,7 @@
     <ClInclude Include="Player.h" />
     <ClInclude Include="myMath.h" />
     <ClInclude Include="skydome.h" />
+    <ClInclude Include="MapChipField.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\shaders\TerrainPS.hlsl">
