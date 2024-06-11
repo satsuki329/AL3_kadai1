@@ -71,6 +71,8 @@ private: // メンバ変数
 	bool isDebugCameraActive_ = false;
 	// デバッグカメラ
 	DebugCamera* debugCamera_ = nullptr;
-
+	//スカイドーム
 	skydome* Skydome_ = nullptr;
+
+	WorldTransform worldTransformSkydome_;
 };

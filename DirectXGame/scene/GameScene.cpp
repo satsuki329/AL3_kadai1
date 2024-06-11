@@ -32,11 +32,13 @@ void GameScene::Initialize() {
 	// 3Dモデルの生成
 	model_ = Model::Create();
 	modelBlock_ = Model::Create();
-	modelSkydome_ = Model::CreateFromOBJ("skydome", true);
+	modelSkydome_ = Model::CreateFromOBJ("sphere", true);
 	// ワールドトランスフォームの初期化
 	worldTransform_.Initialize();
 	// ビュープロジェクションの初期化
 	viewProjection_.Initialize();
+	
+	worldTransformSkydome_.Initialize();
 
 	// 自キャラの生成
 	player_ = new Player();
@@ -165,7 +167,7 @@ void GameScene::Draw() {
 		}
 	}
 
-	modelSkydome_->Draw(worldTransform_, viewProjection_);
+	modelSkydome_->Draw(worldTransformSkydome_, viewProjection_);
 
 	Skydome_->Draw();
 

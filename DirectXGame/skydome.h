@@ -1,4 +1,4 @@
-#pragma once
+#include "Viewprojection.h"
 #include "WorldTransform.h"
 #include "Model.h"
 
@@ -15,7 +15,7 @@ public:
 
 private:
 
-	WorldTransform worldTransform_;
+	WorldTransform worldTransformSkydome_;
 	ViewProjection* viewprojection_ = nullptr;
 
 	Model* model_ = nullptr;
