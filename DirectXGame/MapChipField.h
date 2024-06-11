@@ -18,6 +18,8 @@ public:
 
 	void LoadMapChipCsv(const std::string& filepath);
 
+	MapChipType GetMapChipTypeByIndex(uint32_t xIndex, uint32_t yIndex);
+
 
 private:
 	static inline const float kBlockWidth = 1.0f;
