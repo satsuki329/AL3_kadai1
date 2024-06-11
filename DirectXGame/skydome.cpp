@@ -1,8 +1,6 @@
 #include "skydome.h"
-#include <cassert>
 
 void skydome::Initialize(Model* model, ViewProjection* viewprojection) {
-	assert(model);
 	model_ = model;
 	viewprojection_ = viewprojection;
 	worldTransform_.Initialize();

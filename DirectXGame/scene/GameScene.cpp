@@ -37,13 +37,19 @@ void GameScene::Initialize() {
 	// ビュープロジェクションの初期化
 	viewProjection_.Initialize();
 
+	worldTransformSkydome_.Initialize();
+
 	// 自キャラの生成
 	player_ = new Player();
 	// 自キャラの初期化
 	player_->Initialize(model_, textureHandle_, &viewProjection_);
 
 	//スカイドームの生成
-	//modelSkydome_ = Model::CreateFromOBJ("skydome", true);
+	modelSkydome_ = Model::CreateFromOBJ("sphere", true);
+
+	Skydome_ = new skydome();
+
+	Skydome_->Initialize(modelSkydome_,&viewProjection_);
 
 	// 要素数
 	const uint32_t kNumBlockVirtical = 10;
@@ -158,6 +164,11 @@ void GameScene::Draw() {
 			modelBlock_->Draw(*worldTransformBlockYoko, viewProjection_);
 		}
 	}
+
+	// 3Dモデル描画
+	modelSkydome_->Draw(worldTransformSkydome_, viewProjection_);
+	// 自キャラの描画
+	Skydome_->Draw();
 
 	// 3Dオブジェクト描画後処理
 	Model::PostDraw();

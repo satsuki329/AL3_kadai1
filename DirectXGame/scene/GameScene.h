@@ -73,4 +73,6 @@ private: // メンバ変数
 	DebugCamera* debugCamera_ = nullptr;
 
 	skydome* Skydome_ = nullptr;
+
+	WorldTransform worldTransformSkydome_;
 };
