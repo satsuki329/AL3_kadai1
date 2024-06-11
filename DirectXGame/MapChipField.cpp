@@ -1,5 +1,4 @@
 #include "MapChipField.h"
-#include <cassert>
 #include <fstream>
 #include <map>
 #include <sstream>
@@ -56,8 +55,7 @@ void MapChipField::LoadMapChipCsv(const std::string& filePath) {
 	}
 }
 
-MapChipType GetMapChipTypeByIndex(uint32_t xIndex, uint32_t yIndex) 
-{
+MapChipField::GetMapChipTypeByIndex(uint32_t xIndex, uint32_t yIndex) {
 	if (xIndex < 0 || 100/*kNumBlockHorizontal*/  - 1 < xIndex) 
 	{
 		return MapChipType::kBlank;
@@ -67,4 +65,6 @@ MapChipType GetMapChipTypeByIndex(uint32_t xIndex, uint32_t yIndex)
 	{
 		return MapChipType::kBlank;
 	}
+
+	return mapChipDate_.date;
 }
