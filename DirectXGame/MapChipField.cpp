@@ -2,6 +2,7 @@
 #include <fstream>
 #include <map>
 #include <sstream>
+#include <cassert>
 
 namespace {
 
@@ -12,10 +13,10 @@ std::map<std::string, MapChipType> mapChipTable = {
 }
 
 void MapChipField::ResetMapChipDate() {
-	mapChipDate_.date.clear();
-	mapChipDate_.date.resize(kNumBlockVirtical);
+	mapChipData_.data.clear();
+	mapChipData_.data.resize(kNumBlockVirtical);
 
-	for (std::vector<MapChipType>& mapChipDateLine : mapChipDate_.date) {
+	for (std::vector<MapChipType>& mapChipDateLine : mapChipData_.data) {
 		mapChipDateLine.resize(kNumBlockHorizontal);
 	}
 }
@@ -49,22 +50,27 @@ void MapChipField::LoadMapChipCsv(const std::string& filePath) {
 			getline(line_stream, word, ',');
 
 			if (mapChipTable.contains(word)) {
-				mapChipDate_.date[i][j] = mapChipTable[word];
+				mapChipData_.data[i][j] = mapChipTable[word];
 			}
 		}
 	}
 }
 
-MapChipField::GetMapChipTypeByIndex(uint32_t xIndex, uint32_t yIndex) {
-	if (xIndex < 0 || 100/*kNumBlockHorizontal*/  - 1 < xIndex) 
+MapChipType GetMapChipTypeByIndex(uint32_t xIndex, uint32_t yIndex) {
+	if (xIndex < 0 || kNumBlockHorizontal - 1 < xIndex) 
 	{
 		return MapChipType::kBlank;
 	}
 
-	if (yIndex < 0 || 100/*kNumBlockHorizontal*/  - 1 < yIndex) 
+	if (yIndex < 0 || kNumBlockVirtical - 1 < yIndex) 
 	{
 		return MapChipType::kBlank;
 	}
 
-	return mapChipDate_.date;
+	return mapChipData_.data[yIndex][xIndex];
+}
+
+Vector3 GetMapChipPositionByIndex(uint32_t xIndex, uint32_t yIndex)
+{ 
+	return Vector3(kBlockWidth * xIndex, kBlockHeigth * (kNumBlockVirtical - 1 - yIndex), 0);
 }
