@@ -40,10 +40,16 @@ void GameScene::Initialize() {
 
 	worldTransformSkydome_.Initialize();
 
+	mapChipField_ = new MapChipField;
+	mapChipField_->LoadMapChipCsv("Resources/blocks.csv");
+
 	// 自キャラの生成
 	player_ = new Player();
+
+	Vector3 playerPosition = mapChipField_->GetMapChipPositionByIndex(4, 4);
+
 	// 自キャラの初期化
-	player_->Initialize(model_, textureHandle_, &viewProjection_);
+	player_->Initialize(model_, &viewProjection_, playerPosition);
 
 	//スカイドームの生成
 	modelSkydome_ = Model::CreateFromOBJ("sphere", true);
@@ -57,8 +63,7 @@ void GameScene::Initialize() {
 	// デバッグカメラの生成
 	debugCamera_ = new DebugCamera(1280, 720);
 
-	mapChipField_ = new MapChipField;
-	mapChipField_->LoadMapChipCsv("Resources/blocks.csv");
+	
 
 }
 

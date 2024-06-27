@@ -3,12 +3,13 @@
 #include "Model.h"
 #include "WorldTransform.h"
 #include "ViewProjection.h"
+#include "MathUtilityForText.h"
 
 class Player
 {
 
 public:
-	void Initialize(Model* model, uint32_t texturehandle, ViewProjection* viewprojection);
+	void Initialize(Model* model, ViewProjection* viewprojection, const Vector3& position);
 
 	void Update();
 
