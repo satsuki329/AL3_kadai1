@@ -41,7 +41,7 @@ void GameScene::Initialize() {
 	worldTransformSkydome_.Initialize();
 
 	mapChipField_ = new MapChipField;
-	mapChipField_->LoadMapChipCsv("Resources/blocks.csv");
+	mapChipField_->LoadMapChipCsv("Resources/map.csv");
 
 	GenerateBlocks();
 
@@ -136,7 +136,7 @@ void GameScene::Draw() {
 	/// ここに3Dオブジェクトの描画処理を追加できる
 	/// </summary>
 	// 3Dモデル描画
-		model_->Draw(worldTransform_, viewProjection_, textureHandle_);
+		//model_->Draw(worldTransform_, viewProjection_, textureHandle_);
 	// 自キャラの描画
 		player_->Draw();
 
