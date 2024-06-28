@@ -29,6 +29,10 @@ void Player::Update()
 			if (lrDirection_ != LRDirection::kRight)
 			{
 				lrDirection_ = LRDirection::kRight;
+
+				turnFirstRotationY_ = worldtransform_.rotation_.y;
+
+				turntimer_ = 0.7f;
 			}
 		} 
 		else if (Input::GetInstance()->PushKey(DIK_LEFT))
@@ -42,16 +46,27 @@ void Player::Update()
 
 			if (lrDirection_ != LRDirection::kLeft) {
 				lrDirection_ = LRDirection::kLeft;
+
+				turnFirstRotationY_ = worldtransform_.rotation_.y;
+
+				turntimer_ = 0.7f;
 			}
-		} 
-		else
-		{
-			velocity_.x *= (1.0f - kAttenuation);
 		}
 
 		velocity_ += accelerration;
 
 		velocity_.x = std::clamp(velocity_.x, -kLimitRunSpeed, kLimitRunSpeed);
+
+		if (turntimer_ > 0.0f)
+		{
+			turntimer_ -= 1.0f / 60.0f;
+
+			float destinationRotationYTable[] = {std::numbers::pi_v<float> / 2.0f, std::numbers::pi_v<float> * 3.0f / 2.0f};
+
+			float destinationRotationY = destinationRotationYTable[static_cast<uint32_t>(lrDirection_)];
+
+			worldtransform_.rotation_.y = EaseInOut(destinationRotationY, turnFirstRotationY_, turntimer_ / kTimeTurn);
+		}
 	}
 
 		
