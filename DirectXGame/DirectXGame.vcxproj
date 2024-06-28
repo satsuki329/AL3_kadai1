@@ -116,6 +116,7 @@
     <ClCompile Include="WorldTransform.cpp" />
     <ClCompile Include="myMath.cpp" />
     <ClCompile Include="skydome.cpp" />
+    <ClCompile Include="MathUtilityForText.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="2d\ImGuiManager.h" />
