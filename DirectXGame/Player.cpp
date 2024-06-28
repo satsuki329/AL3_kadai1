@@ -53,9 +53,15 @@ void Player::Update()
 			}
 		}
 
-		velocity_ += accelerration;
+		velocity_.x += accelerration.x;
+		velocity_.y += accelerration.y;
+		velocity_.z += accelerration.z;
 
 		velocity_.x = std::clamp(velocity_.x, -kLimitRunSpeed, kLimitRunSpeed);
+
+		if (accelerration.x >= 0.01f || accelerration.x <= -0.01f) {
+			accelerration.x = 0;
+		}
 
 		if (turntimer_ > 0.0f)
 		{
@@ -66,6 +72,10 @@ void Player::Update()
 			float destinationRotationY = destinationRotationYTable[static_cast<uint32_t>(lrDirection_)];
 
 			worldtransform_.rotation_.y = EaseInOut(destinationRotationY, turnFirstRotationY_, turntimer_ / kTimeTurn);
+		}
+		else
+		{
+		    velocity_.x *= (1.0f - kAttenuation);
 		}
 	}
 
@@ -78,5 +88,5 @@ void Player::Update()
 
 void Player::Draw() 
 { 
-	model_->Draw(worldtransform_,*viewprojection_,texturehandle_);
+	model_->Draw(worldtransform_,*viewprojection_);
 }

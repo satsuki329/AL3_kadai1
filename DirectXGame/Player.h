@@ -33,9 +33,9 @@ private:
 	
 	Vector3 velocity_ = {};
 
-	static inline const float kAcceleration = 1;
-	static inline const float kAttenuation = 1;
-	static inline const float kLimitRunSpeed = 5;
+	static inline const float kAcceleration = 0.01f;
+	static inline const float kAttenuation = 0.01f;
+	static inline const float kLimitRunSpeed = 2.0f;
 	static inline const float kTimeTurn = 0.3f;
 
 	LRDirection lrDirection_ = LRDirection::kRight;

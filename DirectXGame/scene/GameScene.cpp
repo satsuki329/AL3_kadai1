@@ -20,6 +20,7 @@ GameScene::~GameScene() {
 	delete debugCamera_;
 	delete modelSkydome_;
 	delete mapChipField_;
+	delete modelPlayer_;
 }
 
 void GameScene::Initialize() {
@@ -46,12 +47,15 @@ void GameScene::Initialize() {
 	GenerateBlocks();
 
 	// 自キャラの生成
+
+	modelPlayer_ = Model::CreateFromOBJ("player", true);
+
 	player_ = new Player();
 
 	Vector3 playerPosition = mapChipField_->GetMapChipPositionByIndex(4, 4);
 
 	// 自キャラの初期化
-	player_->Initialize(model_, &viewProjection_, playerPosition);
+	player_->Initialize(modelPlayer_, &viewProjection_, playerPosition);
 
 	//スカイドームの生成
 	modelSkydome_ = Model::CreateFromOBJ("sphere", true);
@@ -136,9 +140,10 @@ void GameScene::Draw() {
 	/// ここに3Dオブジェクトの描画処理を追加できる
 	/// </summary>
 	// 3Dモデル描画
-		//model_->Draw(worldTransform_, viewProjection_, textureHandle_);
+	modelPlayer_->Draw(worldTransform_, viewProjection_);
+	
 	// 自キャラの描画
-		player_->Draw();
+	player_->Draw();
 
 	// 縦横ブロック描画
 	for (std::vector<WorldTransform*> worldTransformBlockTate : worldTransformBlocks_) {
@@ -153,7 +158,7 @@ void GameScene::Draw() {
 	// 3Dモデル描画
 	modelSkydome_->Draw(worldTransformSkydome_, viewProjection_);
 	// 自キャラの描画
-	Skydome_->Draw();
+	//Skydome_->Draw();
 
 	// 3Dオブジェクト描画後処理
 	Model::PostDraw();
