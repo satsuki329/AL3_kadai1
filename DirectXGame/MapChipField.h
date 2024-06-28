@@ -1,6 +1,6 @@
-#include "DirectXCommon.h"
-#include "ViewProjection.h"
-#include "WorldTransform.h"
+#include<stdint.h>
+#include<vector>
+#include"Vector3.h"
 
 enum class MapChipType { 
 	kBlank,
@@ -23,8 +23,8 @@ public:
 
 	Vector3 GetMapChipPositionByIndex(uint32_t xIndex, uint32_t yIndex);
 
-	uint32_t GetNumBlockVirtical() const { return kNumBlockVirtical; }
-	uint32_t GetNumBlockHorizontal() const { return kNumBlockHorizontal; }
+	uint32_t GetNumBlockVirtical();
+	uint32_t GetNumBlockHorizontal();
 
 private:
 	static inline const float kBlockWidth = 1.0f;

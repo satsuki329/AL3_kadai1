@@ -114,7 +114,6 @@
     <ClCompile Include="scene\GameScene.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="WorldTransform.cpp" />
-    <ClCompile Include="myMath.cpp" />
     <ClCompile Include="skydome.cpp" />
     <ClCompile Include="MathUtilityForText.cpp" />
   </ItemGroup>
@@ -149,7 +148,6 @@
     <ClInclude Include="math\Vector4.h" />
     <ClInclude Include="scene\GameScene.h" />
     <ClInclude Include="Player.h" />
-    <ClInclude Include="myMath.h" />
     <ClInclude Include="skydome.h" />
     <ClInclude Include="MapChipField.h" />
     <ClInclude Include="MathUtilityForText.h" />

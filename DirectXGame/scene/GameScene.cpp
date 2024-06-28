@@ -1,6 +1,6 @@
 #include "GameScene.h"
 #include "TextureManager.h"
-#include "myMath.h"
+#include "MathUtilityForText.h"
 #include <cassert>
 
 GameScene::GameScene() {}
@@ -58,8 +58,9 @@ void GameScene::Initialize() {
 	debugCamera_ = new DebugCamera(1280, 720);
 
 	mapChipField_ = new MapChipField;
-	mapChipField_->LoadMapChipCsv("Resources/blocks.csv");
+	mapChipField_->LoadMapChipCsv("Resources/map.csv");
 
+    GenerateBlocks();
 }
 
 void GameScene::Update() {
@@ -172,9 +173,7 @@ void GameScene::GenerateBlocks()
 	uint32_t numBlockVirtical = mapChipField_->GetNumBlockVirtical();
 	
 	uint32_t numBlockHorizontal = mapChipField_->GetNumBlockHorizontal();
-	// ブロック1個分の横幅
-	const float kBlockWidth = 2.0f;
-	const float kBlockHeight = 2.0f;
+	
 	// 要素数を変更する
 	worldTransformBlocks_.resize(numBlockVirtical);
 
@@ -190,8 +189,6 @@ void GameScene::GenerateBlocks()
 				worldTransForm->Initialize();
 				worldTransformBlocks_[i][j] = worldTransForm;
 				worldTransformBlocks_[i][j]->translation_ = mapChipField_->GetMapChipPositionByIndex(j, i);
-			} else {
-				worldTransformBlocks_[i][j] = nullptr;
 			}
 		}
 	}

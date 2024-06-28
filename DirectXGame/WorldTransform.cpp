@@ -1,5 +1,5 @@
 #include "WorldTransform.h"
-#include "myMath.h"
+#include "MathUtilityForText.h"
 
 void WorldTransform::UpdateMatrix() {
 
