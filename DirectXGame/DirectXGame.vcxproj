@@ -151,7 +151,7 @@
     <ClInclude Include="skydome.h" />
     <ClInclude Include="MapChipField.h" />
     <ClInclude Include="MathUtilityForText.h" />
-    <ClInclude Include="ヘッダー.h" />
+    <ClInclude Include="Easing.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\shaders\TerrainPS.hlsl">

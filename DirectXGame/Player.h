@@ -32,7 +32,7 @@ private:
 
 	static inline const float kAcceleration = 0.01f;
 	static inline const float kAttenuation = 0.01f;
-	static inline const float kLimitRunSpeed = 2.0f;
+	static inline const float kLimitRunSpeed = 0.3f;
 	static inline const float kTimeTurn = 0.3f;
 
 	LRDirection lrDirection_ = LRDirection::kRight;
@@ -46,6 +46,6 @@ private:
 	bool landing = false;
 
 	static inline const float kGravityAcceleration = 0.05f;
-	static inline const float kLimitFallSpeed = 0.2f;
-	static inline const float kJumpAcceleration = 0.7f;
+	static inline const float kLimitFallSpeed = 0.5f;
+	static inline const float kJumpAcceleration = 0.5f;
 };

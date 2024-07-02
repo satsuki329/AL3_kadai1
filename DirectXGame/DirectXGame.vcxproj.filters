@@ -185,7 +185,7 @@
     <ClInclude Include="MathUtilityForText.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="ヘッダー.h">
+    <ClInclude Include="Easing.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
