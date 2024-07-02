@@ -12,6 +12,7 @@
 #include "WorldTransform.h"
 #include "skydome.h"
 #include <vector>
+#include "CameraController.h"
 
 /// <summary>
 /// ゲームシーン
@@ -60,6 +61,7 @@ private: // メンバ変数
 	Model* modelBlock_ = nullptr;
 	Model* modelSkydome_ = nullptr;
 	Model* modelPlayer_ = nullptr;
+	Model* modelCameracontroller = nullptr;
 	// ワールドトランスフォーム
 	WorldTransform worldTransform_;
 	// ビュープロジェクション
@@ -81,4 +83,6 @@ private: // メンバ変数
 	WorldTransform worldTransformSkydome_;
 
 	MapChipField* mapChipField_;
+
+	CameraController* Cameracontroller = nullptr;
 };

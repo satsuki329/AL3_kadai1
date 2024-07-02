@@ -20,6 +20,8 @@ public:
 
 	void Draw();
 
+	const WorldTransform& GetWorldTransform() const { return worldtransform_; }
+
 private:
 	WorldTransform worldtransform_;
 	ViewProjection* viewprojection_ = nullptr;

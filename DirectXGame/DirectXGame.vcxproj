@@ -116,6 +116,7 @@
     <ClCompile Include="WorldTransform.cpp" />
     <ClCompile Include="skydome.cpp" />
     <ClCompile Include="MathUtilityForText.cpp" />
+    <ClCompile Include="CameraController.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="2d\ImGuiManager.h" />
@@ -152,6 +153,7 @@
     <ClInclude Include="MapChipField.h" />
     <ClInclude Include="MathUtilityForText.h" />
     <ClInclude Include="Easing.h" />
+    <ClInclude Include="CameraController.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\shaders\TerrainPS.hlsl">
