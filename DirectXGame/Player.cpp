@@ -1,7 +1,11 @@
+#define NOMINMAX
+
+#include <algorithm>
 #include "Player.h"
 #include "TextureManager.h"
 #include <cassert>
 #include <numbers>
+#include "Easing.h"
 
 void Player::Initialize(Model* model, ViewProjection* viewProjection, const Vector3& position) { 
 	assert(model); 
@@ -14,73 +18,108 @@ void Player::Initialize(Model* model, ViewProjection* viewProjection, const Vect
 
 void Player::Update()
 { 
-	if (Input::GetInstance()->PushKey(DIK_RIGHT) || Input::GetInstance()->PushKey(DIK_LEFT))
+	if (onGround_ == true)
 	{
-		Vector3 accelerration = {};
+		if (Input::GetInstance()->PushKey(DIK_RIGHT) || Input::GetInstance()->PushKey(DIK_LEFT)) {
+			Vector3 accelerration = {};
 
-		if (Input::GetInstance()->PushKey(DIK_RIGHT))
-		{
-			if (velocity_.x < 0.0f)
-			{
-				velocity_.x *= (1.0f - kAttenuation);
+			if (Input::GetInstance()->PushKey(DIK_RIGHT)) {
+				if (velocity_.x < 0.0f) {
+					velocity_.x *= (1.0f - kAttenuation);
+				}
+				accelerration.x += kAcceleration;
+
+				if (lrDirection_ != LRDirection::kRight) {
+					lrDirection_ = LRDirection::kRight;
+
+					turnFirstRotationY_ = worldtransform_.rotation_.y;
+
+					turntimer_ = 0.7f;
+				}
+			} else if (Input::GetInstance()->PushKey(DIK_LEFT)) {
+				if (velocity_.x > 0.0f) {
+					velocity_.x *= (1.0f - kAttenuation);
+				}
+
+				accelerration.x -= kAcceleration;
+
+				if (lrDirection_ != LRDirection::kLeft) {
+					lrDirection_ = LRDirection::kLeft;
+
+					turnFirstRotationY_ = worldtransform_.rotation_.y;
+
+					turntimer_ = 0.7f;
+				}
 			}
-			accelerration.x += kAcceleration;
+			velocity_.x += accelerration.x;
+			velocity_.y += accelerration.y;
+			velocity_.z += accelerration.z;
 
-			if (lrDirection_ != LRDirection::kRight)
-			{
-				lrDirection_ = LRDirection::kRight;
+			velocity_.x = std::clamp(velocity_.x, -kLimitRunSpeed, kLimitRunSpeed);
 
-				turnFirstRotationY_ = worldtransform_.rotation_.y;
-
-				turntimer_ = 0.7f;
-			}
-		} 
-		else if (Input::GetInstance()->PushKey(DIK_LEFT))
-		{
-			if (velocity_.x > 0.0f) 
-			{
-				velocity_.x *= (1.0f - kAttenuation);
+			if (accelerration.x >= 0.01f || accelerration.x <= -0.01f) {
+				accelerration.x = 0;
 			}
 
-			accelerration.x -= kAcceleration;
+			if (turntimer_ > 0.0f) {
+				turntimer_ -= 1.0f / 60.0f;
 
-			if (lrDirection_ != LRDirection::kLeft) {
-				lrDirection_ = LRDirection::kLeft;
+				float destinationRotationYTable[] = {std::numbers::pi_v<float> / 2.0f, std::numbers::pi_v<float> * 3.0f / 2.0f};
 
-				turnFirstRotationY_ = worldtransform_.rotation_.y;
+				float destinationRotationY = destinationRotationYTable[static_cast<uint32_t>(lrDirection_)];
 
-				turntimer_ = 0.7f;
+				worldtransform_.rotation_.y = Easing::Liner(destinationRotationY, turnFirstRotationY_, Easing::EaseInOut(turntimer_));
 			}
+
+		} else {
+			velocity_.x *= (1.0f - kAttenuation);
 		}
 
-		velocity_.x += accelerration.x;
-		velocity_.y += accelerration.y;
-		velocity_.z += accelerration.z;
-
-		velocity_.x = std::clamp(velocity_.x, -kLimitRunSpeed, kLimitRunSpeed);
-
-		if (accelerration.x >= 0.01f || accelerration.x <= -0.01f) {
-			accelerration.x = 0;
-		}
-
-		if (turntimer_ > 0.0f)
+		if (Input::GetInstance()->PushKey(DIK_UP))
 		{
-			turntimer_ -= 1.0f / 60.0f;
+			velocity_ += Vector3(0, kJumpAcceleration, 0);
+			velocity_.x += 0;
+			velocity_.y += kJumpAcceleration;
+			velocity_.z += 0;
 
-			float destinationRotationYTable[] = {std::numbers::pi_v<float> / 2.0f, std::numbers::pi_v<float> * 3.0f / 2.0f};
-
-			float destinationRotationY = destinationRotationYTable[static_cast<uint32_t>(lrDirection_)];
-
-			worldtransform_.rotation_.y = EaseInOut(destinationRotationY, turnFirstRotationY_, turntimer_ / kTimeTurn);
-		}
-		else
-		{
-		    velocity_.x *= (1.0f - kAttenuation);
 		}
 	}
+	else
+	{
+		velocity_ += Vector3(0, -kGravityAcceleration, 0);
+		velocity_.x += 0;
+		velocity_.y += -kGravityAcceleration;
+		velocity_.z += 0;
 
-		
-	worldtransform_.translation_ += velocity_;
+
+		velocity_.y = std::max(velocity_.y, -kLimitFallSpeed);
+
+		landing = false;
+
+		if (velocity_.y < 0) {
+			if (worldtransform_.translation_.y <= 2.0f) {
+				landing = true;
+			}
+		}
+
+	}
+
+	worldtransform_.translation_.x += velocity_.x;
+	worldtransform_.translation_.y += velocity_.y;
+	worldtransform_.translation_.z += velocity_.z;
+
+	if (onGround_) {
+		if (velocity_.y > 0.0f) {
+			onGround_ = false;
+		}
+	} else {
+		if (landing) {
+			worldtransform_.translation_.y = 2.0f;
+			velocity_.x *= (1.0f - kAttenuation);
+			velocity_.y = 0.0f;
+			onGround_ = true;
+		}
+	}
 
 	worldtransform_.UpdateMatrix(); 
 	worldtransform_.TransferMatrix();

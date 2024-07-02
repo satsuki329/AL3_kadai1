@@ -5,7 +5,7 @@
 #include "ViewProjection.h"
 #include "MathUtilityForText.h"
 #include "Input.h"
-#include <algorithm>
+
 
 class Player
 {
@@ -43,4 +43,12 @@ private:
 	float turnFirstRotationY_ = 0.0f;
 
 	float turntimer_ = 0.0f;
+
+	bool onGround_ = true;
+
+	bool landing = false;
+
+	static inline const float kGravityAcceleration = 0.05f;
+	static inline const float kLimitFallSpeed = 0.2f;
+	static inline const float kJumpAcceleration = 0.7f;
 };
