@@ -1,6 +1,6 @@
 #include "GameScene.h"
-#include "TextureManager.h"
 #include "MathUtilityForText.h"
+#include "TextureManager.h"
 #include <cassert>
 
 GameScene::GameScene() {}
@@ -20,6 +20,7 @@ GameScene::~GameScene() {
 	delete debugCamera_;
 	delete modelSkydome_;
 	delete mapChipField_;
+	delete modelPlayer_;
 }
 
 void GameScene::Initialize() {
@@ -29,7 +30,7 @@ void GameScene::Initialize() {
 	audio_ = Audio::GetInstance();
 
 	// ファイル名を指定してテクスチャを読み込む
-	//AtextureHandle_ = TextureManager::Load("bed.png");
+	// AtextureHandle_ = TextureManager::Load("bed.png");
 	// 3Dモデルの生成
 	model_ = Model::Create();
 	modelBlock_ = Model::Create();
@@ -40,27 +41,31 @@ void GameScene::Initialize() {
 
 	worldTransformSkydome_.Initialize();
 
-	// 自キャラの生成
-	player_ = new Player();
-	// 自キャラの初期化
-	player_->Initialize(model_, textureHandle_, &viewProjection_);
+	mapChipField_ = new MapChipField;
+	mapChipField_->LoadMapChipCsv("Resources/map.csv");
 
-	//スカイドームの生成
+	GenerateBlocks();
+
+	// 自キャラの生成
+
+	modelPlayer_ = Model::CreateFromOBJ("player", true);
+
+	player_ = new Player();
+
+	Vector3 playerPosition = mapChipField_->GetMapChipPositionByIndex(4, 16);
+
+	// 自キャラの初期化
+	player_->Initialize(modelPlayer_, &viewProjection_, playerPosition);
+
+	// スカイドームの生成
 	modelSkydome_ = Model::CreateFromOBJ("sphere", true);
 
 	Skydome_ = new skydome();
 
-	Skydome_->Initialize(modelSkydome_,&viewProjection_);
-
-	
+	Skydome_->Initialize(modelSkydome_, &viewProjection_);
 
 	// デバッグカメラの生成
 	debugCamera_ = new DebugCamera(1280, 720);
-
-	mapChipField_ = new MapChipField;
-	mapChipField_->LoadMapChipCsv("Resources/map.csv");
-
-    GenerateBlocks();
 }
 
 void GameScene::Update() {
@@ -89,7 +94,6 @@ void GameScene::Update() {
 
 	// 自キャラの更新
 	player_->Update();
-
 
 	// 縦横ブロック更新
 	for (std::vector<WorldTransform*> worldTransformBlockTate : worldTransformBlocks_) {
@@ -130,9 +134,10 @@ void GameScene::Draw() {
 	/// ここに3Dオブジェクトの描画処理を追加できる
 	/// </summary>
 	// 3Dモデル描画
-		model_->Draw(worldTransform_, viewProjection_, textureHandle_);
+	modelPlayer_->Draw(worldTransform_, viewProjection_);
+
 	// 自キャラの描画
-		player_->Draw();
+	player_->Draw();
 
 	// 縦横ブロック描画
 	for (std::vector<WorldTransform*> worldTransformBlockTate : worldTransformBlocks_) {
@@ -147,7 +152,7 @@ void GameScene::Draw() {
 	// 3Dモデル描画
 	modelSkydome_->Draw(worldTransformSkydome_, viewProjection_);
 	// 自キャラの描画
-	Skydome_->Draw();
+	// Skydome_->Draw();
 
 	// 3Dオブジェクト描画後処理
 	Model::PostDraw();
@@ -167,13 +172,12 @@ void GameScene::Draw() {
 #pragma endregion
 }
 
-void GameScene::GenerateBlocks()
-{
+void GameScene::GenerateBlocks() {
 	// 要素数
 	uint32_t numBlockVirtical = mapChipField_->GetNumBlockVirtical();
-	
+
 	uint32_t numBlockHorizontal = mapChipField_->GetNumBlockHorizontal();
-	
+
 	// 要素数を変更する
 	worldTransformBlocks_.resize(numBlockVirtical);
 
@@ -184,11 +188,13 @@ void GameScene::GenerateBlocks()
 
 	for (uint32_t i = 0; i < numBlockVirtical; ++i) {
 		for (uint32_t j = 0; j < numBlockHorizontal; ++j) {
-			if (mapChipField_->GetMapChipTypeByIndex(j,i) == MapChipType::kBlock) {
+			if (mapChipField_->GetMapChipTypeByIndex(j, i) == MapChipType::kBlock) {
 				WorldTransform* worldTransForm = new WorldTransform();
 				worldTransForm->Initialize();
 				worldTransformBlocks_[i][j] = worldTransForm;
 				worldTransformBlocks_[i][j]->translation_ = mapChipField_->GetMapChipPositionByIndex(j, i);
+			} else {
+				worldTransformBlocks_[i][j] = nullptr;
 			}
 		}
 	}
