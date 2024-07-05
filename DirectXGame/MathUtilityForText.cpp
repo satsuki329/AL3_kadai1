@@ -34,6 +34,11 @@ const Vector3& operator+(const Vector3& v1, const Vector3& v2) {
 	return temp += v2;
 }
 
+const Vector3& operator*(Vector3& v, float s) {
+	Vector3 temp(v);
+	return temp *= s;
+}
+
 Matrix4x4 MakeIdentityMatrix() {
 	static const Matrix4x4 result{1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f};
 

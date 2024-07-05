@@ -75,6 +75,37 @@ void GameScene::Initialize() {
 	Cameracontroller->SetTarget(player_);
 
 	Cameracontroller->Reset();
+
+	CameraController::Rect cameraArea = {12.0f, 100 - 12.0f, 6.0f, 6.0f};
+	Cameracontroller->SetMovableArea(cameraArea);
+}
+
+void GameScene::GenerateBlocks() {
+	// 要素数
+	uint32_t numBlockVirtical = mapChipField_->GetNumBlockVirtical();
+
+	uint32_t numBlockHorizontal = mapChipField_->GetNumBlockHorizontal();
+
+	// 要素数を変更する
+	worldTransformBlocks_.resize(numBlockVirtical);
+
+	// キューブの生成
+	for (uint32_t i = 0; i < numBlockVirtical; ++i) {
+		worldTransformBlocks_[i].resize(numBlockHorizontal);
+	}
+
+	for (uint32_t i = 0; i < numBlockVirtical; ++i) {
+		for (uint32_t j = 0; j < numBlockHorizontal; ++j) {
+			if (mapChipField_->GetMapChipTypeByIndex(j, i) == MapChipType::kBlock) {
+				WorldTransform* worldTransForm = new WorldTransform();
+				worldTransForm->Initialize();
+				worldTransformBlocks_[i][j] = worldTransForm;
+				worldTransformBlocks_[i][j]->translation_ = mapChipField_->GetMapChipPositionByIndex(j, i);
+			} else {
+				worldTransformBlocks_[i][j] = nullptr;
+			}
+		}
+	}
 }
 
 void GameScene::Update() {
@@ -88,6 +119,8 @@ void GameScene::Update() {
 	}
 #endif
 
+	Cameracontroller->Update();
+
 	// カメラ処理
 	if (isDebugCameraActive_) {
 		// デバッグカメラの更新
@@ -99,10 +132,17 @@ void GameScene::Update() {
 	} else {
 		// ビュープロジェクション行列の更新と転送
 		viewProjection_.UpdateMatrix();
+		viewProjection_.matView = Cameracontroller->GetViewProjection().matView;
+		viewProjection_.matProjection = Cameracontroller->GetViewProjection().matProjection;
+		// ビュープロジェクションの転送
+		viewProjection_.TransferMatrix();
 	}
 
 	// 自キャラの更新
 	player_->Update();
+
+	Skydome_->Update();
+
 
 	// 縦横ブロック更新
 	for (std::vector<WorldTransform*> worldTransformBlockTate : worldTransformBlocks_) {
@@ -181,30 +221,4 @@ void GameScene::Draw() {
 #pragma endregion
 }
 
-void GameScene::GenerateBlocks() {
-	// 要素数
-	uint32_t numBlockVirtical = mapChipField_->GetNumBlockVirtical();
 
-	uint32_t numBlockHorizontal = mapChipField_->GetNumBlockHorizontal();
-
-	// 要素数を変更する
-	worldTransformBlocks_.resize(numBlockVirtical);
-
-	// キューブの生成
-	for (uint32_t i = 0; i < numBlockVirtical; ++i) {
-		worldTransformBlocks_[i].resize(numBlockHorizontal);
-	}
-
-	for (uint32_t i = 0; i < numBlockVirtical; ++i) {
-		for (uint32_t j = 0; j < numBlockHorizontal; ++j) {
-			if (mapChipField_->GetMapChipTypeByIndex(j, i) == MapChipType::kBlock) {
-				WorldTransform* worldTransForm = new WorldTransform();
-				worldTransForm->Initialize();
-				worldTransformBlocks_[i][j] = worldTransForm;
-				worldTransformBlocks_[i][j]->translation_ = mapChipField_->GetMapChipPositionByIndex(j, i);
-			} else {
-				worldTransformBlocks_[i][j] = nullptr;
-			}
-		}
-	}
-}

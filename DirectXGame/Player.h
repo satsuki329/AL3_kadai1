@@ -22,6 +22,8 @@ public:
 
 	const WorldTransform& GetWorldTransform() const { return worldtransform_; }
 
+	const Vector3& GetVelocity() const { return velocity_; }
+
 private:
 	WorldTransform worldtransform_;
 	ViewProjection* viewprojection_ = nullptr;
