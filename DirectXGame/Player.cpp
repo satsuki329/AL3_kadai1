@@ -17,6 +17,21 @@ void Player::Initialize(Model* model, ViewProjection* viewProjection, const Vect
 }
 
 void Player::Update() {
+
+	Move();
+
+	CollisionMapInfo collisionMapInfo;
+
+	collisionMapInfo.move = velocity_;
+
+	worldtransform_.UpdateMatrix();
+	worldtransform_.TransferMatrix();
+}
+
+void Player::Draw() { model_->Draw(worldtransform_, *viewprojection_); }
+
+void Player::Move()
+{
 	if (onGround_ == true) {
 		if (Input::GetInstance()->PushKey(DIK_RIGHT) || Input::GetInstance()->PushKey(DIK_LEFT)) {
 			Vector3 accelerration = {};
@@ -112,9 +127,4 @@ void Player::Update() {
 			onGround_ = true;
 		}
 	}
-
-	worldtransform_.UpdateMatrix();
-	worldtransform_.TransferMatrix();
 }
-
-void Player::Draw() { model_->Draw(worldtransform_, *viewprojection_); }

@@ -6,6 +6,8 @@
 #include "ViewProjection.h"
 #include "WorldTransform.h"
 
+class MapChipField;
+
 class Player {
 
 public:
@@ -14,15 +16,28 @@ public:
 		kLeft,
 	};
 
+	struct CollisionMapInfo {
+		bool ceiling = false;
+		bool landing = false;
+		bool hitWall = false;
+		Vector3 move;
+	};
+
 	void Initialize(Model* model, ViewProjection* viewprojection, const Vector3& position);
 
 	void Update();
 
 	void Draw();
 
+	void SetMapChipField(MapChipField* mapChipField) { mapChipField_ = mapChipField;}
+
 	const WorldTransform& GetWorldTransform() const { return worldtransform_; }
 
 	const Vector3& GetVelocity() const { return velocity_; }
+
+	void Move();
+
+	void CheckMapCollision(CollisionMapInfo& info);
 
 private:
 	WorldTransform worldtransform_;
@@ -38,6 +53,8 @@ private:
 	static inline const float kAttenuation = 0.01f;
 	static inline const float kLimitRunSpeed = 0.3f;
 	static inline const float kTimeTurn = 0.3f;
+	static inline const float kWidth = 0.0f;
+	static inline const float kHeight = 0.0f;
 
 	LRDirection lrDirection_ = LRDirection::kRight;
 
@@ -52,4 +69,6 @@ private:
 	static inline const float kGravityAcceleration = 0.05f;
 	static inline const float kLimitFallSpeed = 0.5f;
 	static inline const float kJumpAcceleration = 0.5f;
+	
+	MapChipField* mapChipField_ = nullptr;
 };

@@ -58,6 +58,8 @@ void GameScene::Initialize() {
 	// 自キャラの初期化
 	player_->Initialize(modelPlayer_, &viewProjection_, playerPosition);
 
+	player_->SetMapChipField(mapChipField_);
+
 	// スカイドームの生成
 	modelSkydome_ = Model::CreateFromOBJ("sphere", true);
 
