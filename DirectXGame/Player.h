@@ -16,6 +16,16 @@ public:
 		kLeft,
 	};
 
+	enum Corner
+	{
+		kRightTop,
+		kLeftTop,
+		kRightBottom,
+		kLeftBottom,
+
+		kNumCorner,
+	};
+
 	struct CollisionMapInfo {
 		bool ceiling = false;
 		bool landing = false;
@@ -38,6 +48,14 @@ public:
 	void Move();
 
 	void CheckMapCollision(CollisionMapInfo& info);
+
+	void CheckMapCollisionUp(CollisionMapInfo& info);
+
+	void CheckMapCollisionDown(CollisionMapInfo& info);
+
+	void CheckMapCollisionLeft(CollisionMapInfo& info);
+
+	void CheckMapCollisionRight(CollisionMapInfo& info);
 
 private:
 	WorldTransform worldtransform_;
@@ -71,4 +89,6 @@ private:
 	static inline const float kJumpAcceleration = 0.5f;
 	
 	MapChipField* mapChipField_ = nullptr;
+
+	
 };

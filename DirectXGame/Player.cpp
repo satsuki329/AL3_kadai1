@@ -20,9 +20,19 @@ void Player::Update() {
 
 	Move();
 
-	CollisionMapInfo collisionMapInfo;
+	CollisionMapInfo collisionMapInfo = {};
 
 	collisionMapInfo.move = velocity_;
+
+	CheckMapCollision(collisionMapInfo);
+
+	/* void Player::CheckMapCollision(CollisionMapInfo & info)
+	{ 
+		CheckMapCollisionUp(info);
+		CheckMapCollisionDown(info);
+		CheckMapCollisionRight(info);
+		CheckMapCollisionLeft(info);
+	}*/
 
 	worldtransform_.UpdateMatrix();
 	worldtransform_.TransferMatrix();
