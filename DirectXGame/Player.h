@@ -37,8 +37,6 @@ public:
 
 	void Move();
 
-	void CheckMapCollision(CollisionMapInfo& info);
-
 private:
 	WorldTransform worldtransform_;
 	ViewProjection* viewprojection_ = nullptr;
@@ -71,4 +69,7 @@ private:
 	static inline const float kJumpAcceleration = 0.5f;
 	
 	MapChipField* mapChipField_ = nullptr;
+
+	void CheckMapCollision(CollisionMapInfo& info);
+	//void CheckMapCollisionUp(CollisionMapInfo& info);
 };

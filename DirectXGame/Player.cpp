@@ -24,8 +24,20 @@ void Player::Update() {
 
 	collisionMapInfo.move = velocity_;
 
+	CheckMapCollision(collisionMapInfo);
+
 	worldtransform_.UpdateMatrix();
 	worldtransform_.TransferMatrix();
+}
+
+void Player::CheckMapCollision(CollisionMapInfo& info)
+{ 
+	CheckMapCollisionUp(info);
+}
+
+//void Player::CheckMapCollisionUp(CollisionMapInfo& info)
+{
+
 }
 
 void Player::Draw() { model_->Draw(worldtransform_, *viewprojection_); }
