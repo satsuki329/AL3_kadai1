@@ -14,16 +14,7 @@ public:
 		kLeft,
 	};
 
-	struct CollisionMapInfo {
-		bool ceiling = false;
-		bool landing = false;
-		bool hitWall = false;
-		Vector3 move;
-
-	};
-
-	enum Corner
-	{
+	enum Corner {
 		kRightBottom,
 		kLeftBottom,
 		kRightTop,
@@ -49,6 +40,14 @@ public:
 	Vector3 CornerPosition(const Vector3& center, Corner corner);
 
 private:
+
+	struct CollisionMapInfo {
+		bool ceiling = false;
+		bool landing = false;
+		bool hitWall = false;
+		Vector3 move;
+	};
+
 	WorldTransform worldtransform_;
 	ViewProjection* viewprojection_ = nullptr;
 
@@ -62,8 +61,10 @@ private:
 	static inline const float kAttenuation = 0.01f;
 	static inline const float kLimitRunSpeed = 0.3f;
 	static inline const float kTimeTurn = 0.3f;
-	static inline const float kWidth = 0.0f;
-	static inline const float kHeight = 0.0f;
+	static inline const float kWidth = 0.8f;
+	static inline const float kHeight = 0.8f;
+	static inline const float kBlank = 0.04f;
+	static inline const float kAttenuationWall = 0.2f;
 
 	LRDirection lrDirection_ = LRDirection::kRight;
 

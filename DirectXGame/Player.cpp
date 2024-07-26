@@ -29,6 +29,19 @@ void Player::Update() {
 
 	CheckMapCollision(collisionMapInfo);
 
+	//これを入れると消える
+	//worldtransform_.translation_ += collisionMapInfo.move;
+
+	if (collisionMapInfo.ceiling)
+	{
+		velocity_.y = 0;
+	}
+
+	if (collisionMapInfo.hitWall)
+	{
+		velocity_.x *= (1.0f - kAttenuationWall);
+	}
+
 	worldtransform_.UpdateMatrix();
 	worldtransform_.TransferMatrix();
 }
@@ -70,6 +83,16 @@ void Player::CheckMapCollisionUp(CollisionMapInfo& info)
 	mapChipType = mapChipField_->GetMapChipTypeByIndex(indexSet.xIndex, indexSet.yIndex);
 	if (mapChipType == MapChipType::kBlock) {
 		hit = true;
+	}
+
+	if (hit)
+	{
+		indexSet = mapChipField_->GetMapChipIndexSetByPosition(worldtransform_.translation_ + Vector3(0, +kHeight / 2.0f, 0));
+
+		MapChipField::Rect rect = mapChipField_->GetRectByIndex(indexSet.xIndex, indexSet.yIndex);
+		info.move.y = std::max(0.0f, rect.bottom - worldtransform_.translation_.y - (kHeight / 2.0f + kBlank));
+
+		info.ceiling = true;
 	}
 }
 
