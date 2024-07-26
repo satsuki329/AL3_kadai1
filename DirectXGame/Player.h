@@ -1,7 +1,5 @@
 #pragma once
 
-#include "Input.h"
-#include "MathUtilityForText.h"
 #include "Model.h"
 #include "ViewProjection.h"
 #include "WorldTransform.h"
@@ -26,13 +24,6 @@ public:
 		kNumCorner,
 	};
 
-	struct CollisionMapInfo {
-		bool ceiling = false;
-		bool landing = false;
-		bool hitWall = false;
-		Vector3 move;
-	};
-
 	void Initialize(Model* model, ViewProjection* viewprojection, const Vector3& position);
 
 	void Update();
@@ -47,17 +38,16 @@ public:
 
 	void Move();
 
-	void CheckMapCollision(CollisionMapInfo& info);
-
-	void CheckMapCollisionUp(CollisionMapInfo& info);
-
-	void CheckMapCollisionDown(CollisionMapInfo& info);
-
-	void CheckMapCollisionLeft(CollisionMapInfo& info);
-
-	void CheckMapCollisionRight(CollisionMapInfo& info);
+	Vector3 CornerPosition(const Vector3& center, Corner corner);
 
 private:
+	struct CollisionMapInfo {
+		bool ceiling = false;
+		bool landing = false;
+		bool hitWall = false;
+		Vector3 move;
+	};
+
 	WorldTransform worldtransform_;
 	ViewProjection* viewprojection_ = nullptr;
 
@@ -70,9 +60,12 @@ private:
 	static inline const float kAcceleration = 0.01f;
 	static inline const float kAttenuation = 0.01f;
 	static inline const float kLimitRunSpeed = 0.3f;
+
 	static inline const float kTimeTurn = 0.3f;
 	static inline const float kWidth = 0.0f;
 	static inline const float kHeight = 0.0f;
+	static inline const float kBlank = 0.04f;
+	static inline const float kAttenuationWall = 0.2f;
 
 	LRDirection lrDirection_ = LRDirection::kRight;
 
@@ -90,5 +83,14 @@ private:
 	
 	MapChipField* mapChipField_ = nullptr;
 
+	void CheckMapCollision(CollisionMapInfo& info);
+
+	void CheckMapCollisionUp(CollisionMapInfo& info);
+
+	//void CheckMapCollisionDown(CollisionMapInfo& info);
+
+	//void CheckMapCollisionLeft(CollisionMapInfo& info);
+
+	//void CheckMapCollisionRight(CollisionMapInfo& info);
 	
 };

@@ -42,11 +42,6 @@ void GameScene::Initialize() {
 
 	worldTransformSkydome_.Initialize();
 
-	mapChipField_ = new MapChipField;
-	mapChipField_->LoadMapChipCsv("Resources/map.csv");
-
-	GenerateBlocks();
-
 	// 自キャラの生成
 
 	modelPlayer_ = Model::CreateFromOBJ("player", true);
@@ -66,6 +61,11 @@ void GameScene::Initialize() {
 	Skydome_ = new skydome();
 
 	Skydome_->Initialize(modelSkydome_, &viewProjection_);
+
+	mapChipField_ = new MapChipField;
+	mapChipField_->LoadMapChipCsv("Resources/map.csv");
+
+	GenerateBlocks();
 
 	// デバッグカメラの生成
 	debugCamera_ = new DebugCamera(1280, 720);
@@ -190,6 +190,8 @@ void GameScene::Draw() {
 	// 自キャラの描画
 	player_->Draw();
 
+	modelSkydome_->Draw(worldTransformSkydome_, viewProjection_);
+
 	// 縦横ブロック描画
 	for (std::vector<WorldTransform*> worldTransformBlockTate : worldTransformBlocks_) {
 		for (WorldTransform* worldTransformBlockYoko : worldTransformBlockTate) {
@@ -201,7 +203,6 @@ void GameScene::Draw() {
 	}
 
 	// 3Dモデル描画
-	modelSkydome_->Draw(worldTransformSkydome_, viewProjection_);
 	// 自キャラの描画
 	// Skydome_->Draw();
 
