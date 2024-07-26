@@ -33,27 +33,33 @@ void Player::Update() {
 void Player::CheckMapCollision(CollisionMapInfo& info)
 { 
 	CheckMapCollisionUp(info);
-<<<<<<< Updated upstream
-}
-
-//void Player::CheckMapCollisionUp(CollisionMapInfo& info)
-{
-
-}
-
-void Player::Draw() { model_->Draw(worldtransform_, *viewprojection_); }
-
-=======
 }
 
 void Player::CheckMapCollisionUp(CollisionMapInfo& info)
-{
+{ 
+	std::array<Vector3, kNumCorner> positionsNew;
 
+	for (uint32_t i = 0; i < positionsNew.size(); ++i)
+	{
+		positionsNew[i] = CornerPosition(worldtransform_.translation_ + info.move, static_cast<Corner>(i));
+	}
+		
+}
+
+Vector3 Player::CornerPosition(const Vector3& center, Corner corner)
+{ 
+	Vector3 offsetTable[kNumCorner] = {
+	    {+kWidth / 2.0f, -kHeight / 2.0f},
+        {-kWidth / 2.0f, -kHeight / 2.0f},
+        {+kWidth / 2.0f, +kHeight / 2.0f},
+        {+kWidth / 2.0f, +kHeight / 2.0f}
+    };
+
+	return center + offsetTable[static_cast<uint32_t>(corner)];
 }
 
 void Player::Draw() { model_->Draw(worldtransform_, *viewprojection_); }
 
->>>>>>> Stashed changes
 void Player::Move()
 {
 	if (onGround_ == true) {

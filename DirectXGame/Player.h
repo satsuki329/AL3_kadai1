@@ -21,8 +21,7 @@ public:
 		bool landing = false;
 		bool hitWall = false;
 		Vector3 move;
-<<<<<<< Updated upstream
-=======
+
 	};
 
 	enum Corner
@@ -33,7 +32,6 @@ public:
 		kLeftTop,
 
 		kNumCorner
->>>>>>> Stashed changes
 	};
 
 	void Initialize(Model* model, ViewProjection* viewprojection, const Vector3& position);
@@ -49,6 +47,8 @@ public:
 	const Vector3& GetVelocity() const { return velocity_; }
 
 	void Move();
+
+	Vector3 CornerPosition(const Vector3& center, Corner corner);
 
 private:
 	WorldTransform worldtransform_;
@@ -84,9 +84,6 @@ private:
 	MapChipField* mapChipField_ = nullptr;
 
 	void CheckMapCollision(CollisionMapInfo& info);
-<<<<<<< Updated upstream
-	//void CheckMapCollisionUp(CollisionMapInfo& info);
-=======
+
 	void CheckMapCollisionUp(CollisionMapInfo& info);
->>>>>>> Stashed changes
 };
