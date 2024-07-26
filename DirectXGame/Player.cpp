@@ -1,11 +1,14 @@
 #define NOMINMAX
 
 #include "Player.h"
+#include "Input.h"
+#include "MathUtilityForText.h"
 #include "Easing.h"
 #include "TextureManager.h"
 #include <algorithm>
 #include <cassert>
 #include <numbers>
+#include "MapChipField.h"
 
 void Player::Initialize(Model* model, ViewProjection* viewProjection, const Vector3& position) {
 	assert(model);
@@ -37,6 +40,11 @@ void Player::CheckMapCollision(CollisionMapInfo& info)
 
 void Player::CheckMapCollisionUp(CollisionMapInfo& info)
 { 
+	if (info.move.y <= 0)
+	{
+		return;
+	}
+
 	std::array<Vector3, kNumCorner> positionsNew;
 
 	for (uint32_t i = 0; i < positionsNew.size(); ++i)
@@ -44,6 +52,25 @@ void Player::CheckMapCollisionUp(CollisionMapInfo& info)
 		positionsNew[i] = CornerPosition(worldtransform_.translation_ + info.move, static_cast<Corner>(i));
 	}
 		
+	MapChipType mapChipType;
+
+	bool hit = false;
+	
+	MapChipField::IndexSet indexSet;
+	// 左上
+	indexSet = mapChipField_->GetMapChipIndexSetByPosition(positionsNew[kRightTop]);
+	mapChipType = mapChipField_->GetMapChipTypeByIndex(indexSet.xIndex, indexSet.yIndex);
+	if (mapChipType == MapChipType::kBlock)
+	{
+		hit = true;
+	}
+
+	//右上
+	indexSet = mapChipField_->GetMapChipIndexSetByPosition(positionsNew[kLeftTop]);
+	mapChipType = mapChipField_->GetMapChipTypeByIndex(indexSet.xIndex, indexSet.yIndex);
+	if (mapChipType == MapChipType::kBlock) {
+		hit = true;
+	}
 }
 
 Vector3 Player::CornerPosition(const Vector3& center, Corner corner)

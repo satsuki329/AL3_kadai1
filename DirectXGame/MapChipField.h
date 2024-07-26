@@ -15,6 +15,12 @@ struct MapChipData
 class MapChipField
 {
 public:
+	struct IndexSet
+	{
+		uint32_t xIndex;
+		uint32_t yIndex;
+	};
+
 	void ResetMapChipDate();
 
 	void LoadMapChipCsv(const std::string& filepath);
@@ -22,6 +28,8 @@ public:
 	MapChipType GetMapChipTypeByIndex(uint32_t xIndex, uint32_t yIndex);
 
 	Vector3 GetMapChipPositionByIndex(uint32_t xIndex, uint32_t yIndex);
+
+	IndexSet GetMapChipIndexSetByPosition(const Vector3& position);
 
 	uint32_t GetNumBlockVirtical();
 	uint32_t GetNumBlockHorizontal();

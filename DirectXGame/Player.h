@@ -1,7 +1,5 @@
 #pragma once
 
-#include "Input.h"
-#include "MathUtilityForText.h"
 #include "Model.h"
 #include "ViewProjection.h"
 #include "WorldTransform.h"
