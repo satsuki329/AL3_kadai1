@@ -33,8 +33,10 @@ void GameScene::Initialize() {
 	// ファイル名を指定してテクスチャを読み込む
 	// AtextureHandle_ = TextureManager::Load("bed.png");
 	// 3Dモデルの生成
+
+	textureHandle_ = TextureManager::Load("block.jpg");
 	model_ = Model::Create();
-	modelBlock_ = Model::Create();
+	modelBlock_ = Model::CreateFromOBJ("block");
 	// ワールドトランスフォームの初期化
 	worldTransform_.Initialize();
 	// ビュープロジェクションの初期化
