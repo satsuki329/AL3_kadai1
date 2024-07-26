@@ -21,6 +21,19 @@ public:
 		bool landing = false;
 		bool hitWall = false;
 		Vector3 move;
+<<<<<<< Updated upstream
+=======
+	};
+
+	enum Corner
+	{
+		kRightBottom,
+		kLeftBottom,
+		kRightTop,
+		kLeftTop,
+
+		kNumCorner
+>>>>>>> Stashed changes
 	};
 
 	void Initialize(Model* model, ViewProjection* viewprojection, const Vector3& position);
@@ -71,5 +84,9 @@ private:
 	MapChipField* mapChipField_ = nullptr;
 
 	void CheckMapCollision(CollisionMapInfo& info);
+<<<<<<< Updated upstream
 	//void CheckMapCollisionUp(CollisionMapInfo& info);
+=======
+	void CheckMapCollisionUp(CollisionMapInfo& info);
+>>>>>>> Stashed changes
 };
