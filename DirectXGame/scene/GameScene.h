@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Audio.h"
+#include "CameraController.h"
 #include "DebugCamera.h"
 #include "DirectXCommon.h"
 #include "Input.h"
@@ -12,7 +13,6 @@
 #include "WorldTransform.h"
 #include "skydome.h"
 #include <vector>
-#include "CameraController.h"
 
 /// <summary>
 /// ゲームシーン
@@ -54,15 +54,14 @@ private: // メンバ変数
 	/// <summary>
 	/// ゲームシーン用
 	/// </summary>
+
 	// テクスチャハンドル
 	uint32_t textureHandle_ = 0;
 	// 3Dモデル
 	Model* model_ = nullptr;
 	Model* modelBlock_ = nullptr;
-	Model* modelSkydome_ = nullptr;
-	Model* modelPlayer_ = nullptr;
-	Model* modelCameracontroller = nullptr;
-	// ワールドトランスフォーム
+	// Model* modelCameracontroller = nullptr;
+	//  ワールドトランスフォーム
 	WorldTransform worldTransform_;
 	// ビュープロジェクション
 	ViewProjection viewProjection_;
@@ -79,6 +78,7 @@ private: // メンバ変数
 	DebugCamera* debugCamera_ = nullptr;
 
 	skydome* Skydome_ = nullptr;
+	Model* modelSkydome_ = nullptr;
 
 	WorldTransform worldTransformSkydome_;
 

@@ -1,20 +1,30 @@
-#include<stdint.h>
-#include<vector>
-#include"Vector3.h"
+#include "Vector3.h"
+#include <stdint.h>
+#include <vector>
 
-enum class MapChipType { 
+enum class MapChipType {
 	kBlank,
 	kBlock,
 };
 
-struct MapChipData
-{
+struct MapChipData {
 	std::vector<std::vector<MapChipType>> data;
 };
 
-class MapChipField
-{
+class MapChipField {
 public:
+	struct IndexSet {
+		uint32_t xIndex;
+		uint32_t yIndex;
+	};
+
+	struct Rect {
+		float left;
+		float right;
+		float bottom;
+		float top;
+	};
+
 	void ResetMapChipDate();
 
 	void LoadMapChipCsv(const std::string& filepath);
@@ -22,6 +32,10 @@ public:
 	MapChipType GetMapChipTypeByIndex(uint32_t xIndex, uint32_t yIndex);
 
 	Vector3 GetMapChipPositionByIndex(uint32_t xIndex, uint32_t yIndex);
+
+	IndexSet GetMapChipIndexSetByPosition(const Vector3& position);
+
+	Rect GetRectByIndex(uint32_t xIndex, uint32_t yIndex);
 
 	uint32_t GetNumBlockVirtical();
 	uint32_t GetNumBlockHorizontal();

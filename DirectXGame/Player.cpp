@@ -1,19 +1,23 @@
 #define NOMINMAX
 
 #include "Player.h"
+#include "DirectXCommon.h"
 #include "Easing.h"
+#include "Input.h"
+#include "MapChipField.h"
+#include "MathUtilityForText.h"
 #include "TextureManager.h"
 #include <algorithm>
 #include <cassert>
 #include <numbers>
 
-void Player::Initialize(Model* model, ViewProjection* viewProjection, const Vector3& position) {
-	assert(model);
-	model_ = model;
+void Player::Initialize(ViewProjection* viewProjection, const Vector3& position) {
 	viewprojection_ = viewProjection;
 	worldtransform_.Initialize();
 	worldtransform_.translation_ = position;
 	worldtransform_.rotation_.y = std::numbers::pi_v<float> / 2.0f;
+
+	model_ = Model::CreateFromOBJ("player", true);
 }
 
 void Player::Update() {
@@ -24,14 +28,83 @@ void Player::Update() {
 
 	collisionMapInfo.move = velocity_;
 
+	CheckMapCollision(collisionMapInfo);
+
+	// これを入れると消える
+	worldtransform_.translation_ += collisionMapInfo.move;
+
+	if (collisionMapInfo.ceiling) {
+		velocity_.y = 0;
+	}
+
+	if (collisionMapInfo.hitWall) {
+		velocity_.x *= (1.0f - kAttenuationWall);
+	}
+
+	// UpdateOnGround(collisionMapInfo)
+
 	worldtransform_.UpdateMatrix();
 	worldtransform_.TransferMatrix();
 }
 
-void Player::Draw() { model_->Draw(worldtransform_, *viewprojection_); }
+void Player::CheckMapCollision(CollisionMapInfo& info) { CheckMapCollisionUp(info); }
 
-void Player::Move()
-{
+void Player::CheckMapCollisionUp(CollisionMapInfo& info) {
+	if (info.move.y <= 0) {
+		return;
+	}
+
+	std::array<Vector3, kNumCorner> positionsNew;
+
+	for (uint32_t i = 0; i < positionsNew.size(); ++i) {
+		positionsNew[i] = CornerPosition(worldtransform_.translation_ + info.move, static_cast<Corner>(i));
+	}
+
+	MapChipType mapChipType;
+
+	bool hit = false;
+
+	MapChipField::IndexSet indexSet;
+
+	// 左上
+	indexSet = mapChipField_->GetMapChipIndexSetByPosition(positionsNew[kLeftTop]);
+	mapChipType = mapChipField_->GetMapChipTypeByIndex(indexSet.xIndex, indexSet.yIndex);
+	if (mapChipType == MapChipType::kBlock) {
+		hit = true;
+	}
+
+	// 右上
+	indexSet = mapChipField_->GetMapChipIndexSetByPosition(positionsNew[kRightTop]);
+	mapChipType = mapChipField_->GetMapChipTypeByIndex(indexSet.xIndex, indexSet.yIndex);
+	if (mapChipType == MapChipType::kBlock) {
+		hit = true;
+	}
+
+	/*
+	if (hit)
+	{
+	    indexSet = mapChipField_->GetMapChipIndexSetByPosition(worldtransform_.translation_ + Vector3(0, +kHeight / 2.0f, 0));
+
+	    MapChipField::Rect rect = mapChipField_->GetRectByIndex(indexSet.xIndex, indexSet.yIndex);
+	    info.move.y = std::max(0.0f, rect.bottom - worldtransform_.translation_.y - (kHeight / 2.0f + kBlank));
+
+	    info.ceiling = true;
+	}
+	*/
+}
+
+Vector3 Player::CornerPosition(const Vector3& center, Corner corner) {
+	Vector3 offsetTable[kNumCorner] = {
+	    {+kWidth / 2.0f, -kHeight / 2.0f, 0},
+        {-kWidth / 2.0f, -kHeight / 2.0f, 0},
+        {+kWidth / 2.0f, +kHeight / 2.0f, 0},
+        {-kWidth / 2.0f, +kHeight / 2.0f, 0}
+    };
+
+	return center + offsetTable[static_cast<uint32_t>(corner)];
+}
+
+void Player::Move() {
 	if (onGround_ == true) {
 		if (Input::GetInstance()->PushKey(DIK_RIGHT) || Input::GetInstance()->PushKey(DIK_LEFT)) {
 			Vector3 accelerration = {};
@@ -89,31 +162,32 @@ void Player::Move()
 		}
 
 		if (Input::GetInstance()->PushKey(DIK_UP)) {
-			velocity_ += Vector3(0, kJumpAcceleration, 0);
-			velocity_.x += 0;
-			velocity_.y += kJumpAcceleration;
-			velocity_.z += 0;
+			velocity_ += Vector3(0, kJumpAcceleration / 60.0f, 0); //
+			                                                       // velocity_.x += 0;
+			// velocity_.y += kJumpAcceleration;
+			// velocity_.z += 0;
 		}
 	} else {
-		velocity_ += Vector3(0, -kGravityAcceleration, 0);
-		velocity_.x += 0;
-		velocity_.y += -kGravityAcceleration;
-		velocity_.z += 0;
+		velocity_ += Vector3(0, -kGravityAcceleration / 60.0f, 0); //
+		// velocity_.x += 0;
+		// velocity_.y += -kGravityAcceleration;
+		// velocity_.z += 0;
 
 		velocity_.y = std::max(velocity_.y, -kLimitFallSpeed);
 
 		landing = false;
 
 		if (velocity_.y < 0) {
-			if (worldtransform_.translation_.y <= 2.0f) {
+			if (worldtransform_.translation_.y <= 1.0f) {
 				landing = true;
 			}
 		}
 	}
 
-	worldtransform_.translation_.x += velocity_.x;
-	worldtransform_.translation_.y += velocity_.y;
-	worldtransform_.translation_.z += velocity_.z;
+	worldtransform_.translation_ += velocity_;
+	// worldtransform_.translation_.x += velocity_.x;
+	// worldtransform_.translation_.y += velocity_.y;
+	// worldtransform_.translation_.z += velocity_.z;
 
 	if (onGround_) {
 		if (velocity_.y > 0.0f) {
@@ -121,10 +195,12 @@ void Player::Move()
 		}
 	} else {
 		if (landing) {
-			worldtransform_.translation_.y = 2.0f;
+			worldtransform_.translation_.y = 1.0f;
 			velocity_.x *= (1.0f - kAttenuation);
 			velocity_.y = 0.0f;
 			onGround_ = true;
 		}
 	}
 }
+
+void Player::Draw() { model_->Draw(worldtransform_, *viewprojection_); }
