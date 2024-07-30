@@ -60,9 +60,7 @@ private: // メンバ変数
 	// 3Dモデル
 	Model* model_ = nullptr;
 	Model* modelBlock_ = nullptr;
-	Model* modelSkydome_ = nullptr;
-	Model* modelPlayer_ = nullptr;
-	Model* modelCameracontroller = nullptr;
+	//Model* modelCameracontroller = nullptr;
 	// ワールドトランスフォーム
 	WorldTransform worldTransform_;
 	// ビュープロジェクション
@@ -80,6 +78,7 @@ private: // メンバ変数
 	DebugCamera* debugCamera_ = nullptr;
 
 	skydome* Skydome_ = nullptr;
+	Model* modelSkydome_ = nullptr;
 
 	WorldTransform worldTransformSkydome_;
 

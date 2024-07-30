@@ -7,7 +7,6 @@ GameScene::GameScene() {}
 
 GameScene::~GameScene() {
 	delete model_;
-	delete player_;
 
 	for (std::vector<WorldTransform*>& worldTransformBlockLine : worldTransformBlocks_) {
 		for (WorldTransform* worldTransformBlock : worldTransformBlockLine) {
@@ -20,7 +19,6 @@ GameScene::~GameScene() {
 	delete debugCamera_;
 	delete modelSkydome_;
 	delete mapChipField_;
-	delete modelPlayer_;
 	delete Cameracontroller;
 }
 
@@ -31,7 +29,6 @@ void GameScene::Initialize() {
 	audio_ = Audio::GetInstance();
 
 	// ファイル名を指定してテクスチャを読み込む
-	// AtextureHandle_ = TextureManager::Load("bed.png");
 	// 3Dモデルの生成
 
 	//textureHandle_ = TextureManager::Load("block.jpg");
@@ -46,14 +43,12 @@ void GameScene::Initialize() {
 
 	// 自キャラの生成
 
-	modelPlayer_ = Model::CreateFromOBJ("player", true);
-
 	player_ = new Player();
 
 	Vector3 playerPosition = mapChipField_->GetMapChipPositionByIndex(1, 18);
 
 	// 自キャラの初期化
-	player_->Initialize(modelPlayer_, &viewProjection_, playerPosition);
+	player_->Initialize( &viewProjection_, playerPosition);
 
 	// スカイドームの生成
 	modelSkydome_ = Model::CreateFromOBJ("sphere", true);
@@ -187,10 +182,7 @@ void GameScene::Draw() {
 	/// ここに3Dオブジェクトの描画処理を追加できる
 	/// </summary>
 	// 3Dモデル描画
-	modelPlayer_->Draw(worldTransform_, viewProjection_);
-
-	// 自キャラの描画
-	player_->Draw();
+	model_->Draw(worldTransform_, viewProjection_,textureHandle_);
 
 	// 縦横ブロック描画
 	for (std::vector<WorldTransform*> worldTransformBlockTate : worldTransformBlocks_) {
@@ -201,6 +193,9 @@ void GameScene::Draw() {
 			modelBlock_->Draw(*worldTransformBlockYoko, viewProjection_);
 		}
 	}
+
+	// 自キャラの描画
+	player_->Draw();
 
 	// 3Dモデル描画
 	modelSkydome_->Draw(worldTransformSkydome_, viewProjection_);

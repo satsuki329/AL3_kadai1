@@ -92,7 +92,6 @@ void Player::CheckMapCollisionUp(CollisionMapInfo& info)
 	}
 
 	
-	/*
 	if (hit)
 	{
 		indexSet = mapChipField_->GetMapChipIndexSetByPosition(worldtransform_.translation_ + Vector3(0, +kHeight / 2.0f, 0));
@@ -102,7 +101,6 @@ void Player::CheckMapCollisionUp(CollisionMapInfo& info)
 
 		info.ceiling = true;
 	}
-	*/
 	
 }
 

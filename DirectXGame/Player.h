@@ -23,7 +23,7 @@ public:
 		kNumCorner
 	};
 
-	void Initialize(Model* model, ViewProjection* viewprojection, const Vector3& position);
+	void Initialize( ViewProjection* viewprojection, const Vector3& position);
 
 	void Update();
 
@@ -53,13 +53,13 @@ private:
 
 	Model* model_ = nullptr;
 
-	uint32_t texturehandle_ = 0;
+	uint32_t texturehandle_ = 0u;
 
 	Vector3 velocity_ = {};
 
 	static inline const float kAcceleration = 0.01f;
 	static inline const float kAttenuation = 0.01f;
-	static inline const float kLimitRunSpeed = 0.3f;
+	static inline const float kLimitRunSpeed = 0.5f;
 	static inline const float kTimeTurn = 0.3f;
 	static inline const float kWidth = 0.8f;
 	static inline const float kHeight = 0.8f;
@@ -76,9 +76,9 @@ private:
 
 	bool landing = false;
 
-	static inline const float kGravityAcceleration = 0.05f;
+	static inline const float kGravityAcceleration = 0.98f;
 	static inline const float kLimitFallSpeed = 0.5f;
-	static inline const float kJumpAcceleration = 0.5f;
+	static inline const float kJumpAcceleration = 20.0f;
 	
 	MapChipField* mapChipField_ = nullptr;
 
