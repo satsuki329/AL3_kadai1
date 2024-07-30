@@ -92,7 +92,7 @@ void Player::CheckMapCollisionUp(CollisionMapInfo& info)
 	}
 
 	
-	/*
+	
 	if (hit)
 	{
 		indexSet = mapChipField_->GetMapChipIndexSetByPosition(worldtransform_.translation_ + Vector3(0, +kHeight / 2.0f, 0));
@@ -102,13 +102,13 @@ void Player::CheckMapCollisionUp(CollisionMapInfo& info)
 
 		info.ceiling = true;
 	}
-	*/
+	
 	
 }
 
 Vector3 Player::CornerPosition(const Vector3& center, Corner corner)
 { 
-	Vector3 offsetTable[kNumCorner] = {
+	Vector3 offsetTable[] = {
 	    {+kWidth / 2.0f, -kHeight / 2.0f,0},
         {-kWidth / 2.0f, -kHeight / 2.0f,0},
         {+kWidth / 2.0f, +kHeight / 2.0f,0},
