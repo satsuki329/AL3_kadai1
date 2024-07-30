@@ -23,13 +23,13 @@ public:
 		kNumCorner
 	};
 
-	void Initialize( ViewProjection* viewprojection, const Vector3& position);
+	void Initialize(ViewProjection* viewprojection, const Vector3& position);
 
 	void Update();
 
 	void Draw();
 
-	void SetMapChipField(MapChipField* mapChipField) { mapChipField_ = mapChipField;}
+	void SetMapChipField(MapChipField* mapChipField) { mapChipField_ = mapChipField; }
 
 	const WorldTransform& GetWorldTransform() const { return worldtransform_; }
 
@@ -40,7 +40,6 @@ public:
 	Vector3 CornerPosition(const Vector3& center, Corner corner);
 
 private:
-
 	struct CollisionMapInfo {
 		bool ceiling = false;
 		bool landing = false;
@@ -79,10 +78,16 @@ private:
 	static inline const float kGravityAcceleration = 0.98f;
 	static inline const float kLimitFallSpeed = 0.5f;
 	static inline const float kJumpAcceleration = 20.0f;
-	
+	static inline const float kAttenuationLanding = 0.0f;
+	static inline const float kGroundSearchHeight = 0.06f;
+
 	MapChipField* mapChipField_ = nullptr;
 
 	void CheckMapCollision(CollisionMapInfo& info);
-
 	void CheckMapCollisionUp(CollisionMapInfo& info);
+	void CheckMapCollisionDown(CollisionMapInfo& info);
+	//void CheckMapCollisionLeft(CollisionMapInfo& info);
+	//void CheckMapCollisionRight(CollisionMapInfo& info);
+
+	void UpdateOnGround(const CollisionMapInfo& info);
 };
