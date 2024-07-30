@@ -79,15 +79,15 @@ private:
 	static inline const float kLimitFallSpeed = 0.5f;
 	static inline const float kJumpAcceleration = 20.0f;
 	static inline const float kAttenuationLanding = 0.0f;
-	static inline const float kGroundSearchHeight = 0.06f;
+	static inline const float kGroundSearchHeight = 0.2f;
 
 	MapChipField* mapChipField_ = nullptr;
 
 	void CheckMapCollision(CollisionMapInfo& info);
 	void CheckMapCollisionUp(CollisionMapInfo& info);
 	void CheckMapCollisionDown(CollisionMapInfo& info);
-	//void CheckMapCollisionLeft(CollisionMapInfo& info);
-	//void CheckMapCollisionRight(CollisionMapInfo& info);
+	void CheckMapCollisionLeft(CollisionMapInfo& info);
+	void CheckMapCollisionRight(CollisionMapInfo& info);
 
 	void UpdateOnGround(const CollisionMapInfo& info);
 };
