@@ -1,6 +1,14 @@
+<<<<<<< Updated upstream
 #include<stdint.h>
 #include<vector>
 #include"Vector3.h"
+=======
+#pragma once
+
+#include "Vector3.h"
+#include <stdint.h>
+#include <vector>
+>>>>>>> Stashed changes
 
 enum class MapChipType { 
 	kBlank,
