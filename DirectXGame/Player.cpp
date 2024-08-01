@@ -47,7 +47,7 @@ void Player::Update() {
 	UpdateOnGround(collisionMapInfo);
 
 	worldtransform_.UpdateMatrix();
-	worldtransform_.TransferMatrix();
+	//worldtransform_.TransferMatrix();
 }
 
 void Player::CheckMapCollision(CollisionMapInfo& info) { 
