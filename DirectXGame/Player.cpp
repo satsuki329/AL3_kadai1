@@ -28,6 +28,10 @@ void Player::Update() {
 
 	collisionMapInfo.move = velocity_;
 
+	collisionMapInfo.landing = false;
+
+	collisionMapInfo.hitWall = false;
+
 	CheckMapCollision(collisionMapInfo);
 
 	worldtransform_.translation_ += collisionMapInfo.move;
@@ -65,6 +69,7 @@ void Player::CheckMapCollisionUp(CollisionMapInfo& info) {
 	}
 
 	MapChipType mapChipType;
+	MapChipType mapChipTypeNext;
 
 	bool hit = false;
 
@@ -73,24 +78,32 @@ void Player::CheckMapCollisionUp(CollisionMapInfo& info) {
 	// 左上
 	indexSet = mapChipField_->GetMapChipIndexSetByPosition(positionsNew[kLeftTop]);
 	mapChipType = mapChipField_->GetMapChipTypeByIndex(indexSet.xIndex, indexSet.yIndex);
-	if (mapChipType == MapChipType::kBlock) {
+	mapChipTypeNext = mapChipField_->GetMapChipTypeByIndex(indexSet.xIndex, indexSet.yIndex + 1);
+	if (mapChipType == MapChipType::kBlock && mapChipTypeNext != MapChipType::kBlock) {
 		hit = true;
 	}
 
 	// 右上
 	indexSet = mapChipField_->GetMapChipIndexSetByPosition(positionsNew[kRightTop]);
 	mapChipType = mapChipField_->GetMapChipTypeByIndex(indexSet.xIndex, indexSet.yIndex);
-	if (mapChipType == MapChipType::kBlock) {
+	mapChipTypeNext = mapChipField_->GetMapChipTypeByIndex(indexSet.xIndex, indexSet.yIndex + 1);
+	if (mapChipType == MapChipType::kBlock && mapChipTypeNext != MapChipType::kBlock) {
 		hit = true;
 	}
 
 	if (hit) {
-		indexSet = mapChipField_->GetMapChipIndexSetByPosition(worldtransform_.translation_ + info.move + Vector3(0, +kHeight / 2.0f, 0));
+		MapChipField::IndexSet indexSetNow;
 
-		MapChipField::Rect rect = mapChipField_->GetRectByIndex(indexSet.xIndex, indexSet.yIndex);
-		info.move.y = std::max(0.0f, rect.bottom - worldtransform_.translation_.y - (kHeight / 2.0f + kBlank));
+		indexSetNow = mapChipField_->GetMapChipIndexSetByPosition(worldtransform_.translation_ + Vector3(0, +kHeight / 2.0f, 0));
+		if (indexSetNow.xIndex != indexSet.xIndex)
+		{
+			indexSet = mapChipField_->GetMapChipIndexSetByPosition(worldtransform_.translation_ + info.move + Vector3(0, +kHeight / 2.0f, 0));
 
-		info.ceiling = true;
+			MapChipField::Rect rect = mapChipField_->GetRectByIndex(indexSet.xIndex, indexSet.yIndex);
+			info.move.y = std::max(0.0f, rect.bottom - worldtransform_.translation_.y - (kHeight / 2.0f + kBlank));
+
+			info.ceiling = true;
+		}
 	}
 }
 
@@ -106,6 +119,7 @@ void Player::CheckMapCollisionDown(CollisionMapInfo& info) {
 	}
 
 	MapChipType mapChipType;
+	MapChipType mapChipTypeNext;
 
 	bool hit = false;
 
@@ -114,24 +128,32 @@ void Player::CheckMapCollisionDown(CollisionMapInfo& info) {
 	// 左下
 	indexSet = mapChipField_->GetMapChipIndexSetByPosition(positionsNew[kLeftBottom]);
 	mapChipType = mapChipField_->GetMapChipTypeByIndex(indexSet.xIndex, indexSet.yIndex);
-	if (mapChipType == MapChipType::kBlock) {
+	mapChipTypeNext = mapChipField_->GetMapChipTypeByIndex(indexSet.xIndex, indexSet.yIndex - 1);
+	if (mapChipType == MapChipType::kBlock && mapChipTypeNext != MapChipType::kBlock) {
 		hit = true;
 	}
 
 	// 右下
 	indexSet = mapChipField_->GetMapChipIndexSetByPosition(positionsNew[kRightBottom]);
 	mapChipType = mapChipField_->GetMapChipTypeByIndex(indexSet.xIndex, indexSet.yIndex);
-	if (mapChipType == MapChipType::kBlock) {
+	mapChipTypeNext = mapChipField_->GetMapChipTypeByIndex(indexSet.xIndex, indexSet.yIndex - 1);
+	if (mapChipType == MapChipType::kBlock && mapChipTypeNext != MapChipType::kBlock) {
 		hit = true;
 	}
 
 	if (hit) {
-		indexSet = mapChipField_->GetMapChipIndexSetByPosition(worldtransform_.translation_ + info.move + Vector3(0, -kHeight / 2.0f, 0));
+		MapChipField::IndexSet indexSetNow;
 
-		MapChipField::Rect rect = mapChipField_->GetRectByIndex(indexSet.xIndex, indexSet.yIndex);
-		info.move.y = std::min(0.0f, rect.top - worldtransform_.translation_.y + (kHeight / 2.0f + kBlank));
+		indexSetNow = mapChipField_->GetMapChipIndexSetByPosition(worldtransform_.translation_ + Vector3(0, -kHeight / 2.0f, 0));
+		if (indexSetNow.xIndex != indexSet.xIndex)
+		{
+			indexSet = mapChipField_->GetMapChipIndexSetByPosition(worldtransform_.translation_ + info.move + Vector3(0, -kHeight / 2.0f, 0));
 
-		info.landing = true;
+			MapChipField::Rect rect = mapChipField_->GetRectByIndex(indexSet.xIndex, indexSet.yIndex);
+			info.move.y = std::min(0.0f, rect.top - worldtransform_.translation_.y + (kHeight / 2.0f + kBlank));
+
+			info.landing = true;
+		}
 	}
 }
 
@@ -147,6 +169,7 @@ void Player::CheckMapCollisionRight(CollisionMapInfo& info) {
 	}
 
 	MapChipType mapChipType;
+	MapChipType mapChipTypeNext;
 
 	bool hit = false;
 
@@ -155,24 +178,32 @@ void Player::CheckMapCollisionRight(CollisionMapInfo& info) {
 	// 右上
 	indexSet = mapChipField_->GetMapChipIndexSetByPosition(positionsNew[kRightTop]);
 	mapChipType = mapChipField_->GetMapChipTypeByIndex(indexSet.xIndex, indexSet.yIndex);
-	if (mapChipType == MapChipType::kBlock) {
+	mapChipTypeNext = mapChipField_->GetMapChipTypeByIndex(indexSet.xIndex - 1, indexSet.yIndex);
+	if (mapChipType == MapChipType::kBlock && mapChipTypeNext != MapChipType::kBlock) {
 		hit = true;
 	}
 
 	// 右下
 	indexSet = mapChipField_->GetMapChipIndexSetByPosition(positionsNew[kRightBottom]);
 	mapChipType = mapChipField_->GetMapChipTypeByIndex(indexSet.xIndex, indexSet.yIndex);
-	if (mapChipType == MapChipType::kBlock) {
+	mapChipTypeNext = mapChipField_->GetMapChipTypeByIndex(indexSet.xIndex - 1, indexSet.yIndex);
+	if (mapChipType == MapChipType::kBlock && mapChipTypeNext != MapChipType::kBlock) {
 		hit = true;
 	}
 
 	if (hit) {
-		indexSet = mapChipField_->GetMapChipIndexSetByPosition(worldtransform_.translation_ + info.move + Vector3(+kWidth / 2.0f, 0, 0));
+		MapChipField::IndexSet indexSetNow;
 
-		MapChipField::Rect rect = mapChipField_->GetRectByIndex(indexSet.xIndex, indexSet.yIndex);
-		info.move.x = std::max(0.0f, rect.left - worldtransform_.translation_.x - (kWidth / 2.0f + kBlank));
+		indexSetNow = mapChipField_->GetMapChipIndexSetByPosition(worldtransform_.translation_ + Vector3(+kWidth / 2.0f, 0, 0));
+		if (indexSetNow.xIndex != indexSet.xIndex)
+		{
+			indexSet = mapChipField_->GetMapChipIndexSetByPosition(worldtransform_.translation_ + info.move + Vector3(+kWidth / 2.0f, 0, 0));
 
-		info.hitWall = true;
+			MapChipField::Rect rect = mapChipField_->GetRectByIndex(indexSet.xIndex, indexSet.yIndex);
+			info.move.x = std::max(0.0f, rect.left - worldtransform_.translation_.x - (kWidth / 2.0f + kBlank));
+
+			info.hitWall = true;
+		}
 	}
 }
 
@@ -188,6 +219,7 @@ void Player::CheckMapCollisionLeft(CollisionMapInfo& info) {
 	}
 
 	MapChipType mapChipType;
+	MapChipType mapChipTypeNext;
 
 	bool hit = false;
 
@@ -196,24 +228,32 @@ void Player::CheckMapCollisionLeft(CollisionMapInfo& info) {
 	// 左上
 	indexSet = mapChipField_->GetMapChipIndexSetByPosition(positionsNew[kLeftTop]);
 	mapChipType = mapChipField_->GetMapChipTypeByIndex(indexSet.xIndex, indexSet.yIndex);
-	if (mapChipType == MapChipType::kBlock) {
+	mapChipTypeNext = mapChipField_->GetMapChipTypeByIndex(indexSet.xIndex + 1, indexSet.yIndex);
+	if (mapChipType == MapChipType::kBlock && mapChipTypeNext != MapChipType::kBlock) {
 		hit = true;
 	}
 
 	// 左下
 	indexSet = mapChipField_->GetMapChipIndexSetByPosition(positionsNew[kLeftBottom]);
 	mapChipType = mapChipField_->GetMapChipTypeByIndex(indexSet.xIndex, indexSet.yIndex);
-	if (mapChipType == MapChipType::kBlock) {
+	mapChipTypeNext = mapChipField_->GetMapChipTypeByIndex(indexSet.xIndex + 1, indexSet.yIndex);
+	if (mapChipType == MapChipType::kBlock && mapChipTypeNext != MapChipType::kBlock) {
 		hit = true;
 	}
 
 	if (hit) {
-		indexSet = mapChipField_->GetMapChipIndexSetByPosition(worldtransform_.translation_ + info.move + Vector3(-kWidth / 2.0f,0, 0));
+		MapChipField::IndexSet indexSetNow;
+		indexSetNow = mapChipField_->GetMapChipIndexSetByPosition(worldtransform_.translation_ + Vector3(-kWidth / 2.0f, 0, 0));
 
-		MapChipField::Rect rect = mapChipField_->GetRectByIndex(indexSet.xIndex, indexSet.yIndex);
-		info.move.x = std::min(0.0f, rect.right - worldtransform_.translation_.x + (kWidth / 2.0f + kBlank));
+		if (indexSetNow.xIndex != indexSet.xIndex)
+		{
+			indexSet = mapChipField_->GetMapChipIndexSetByPosition(worldtransform_.translation_ + info.move + Vector3(-kWidth / 2.0f, 0, 0));
 
-		info.hitWall = true;
+			MapChipField::Rect rect = mapChipField_->GetRectByIndex(indexSet.xIndex, indexSet.yIndex);
+			info.move.x = std::min(0.0f, rect.right - worldtransform_.translation_.x + (kWidth / 2.0f + kBlank));
+
+			info.hitWall = true;
+		}
 	}
 }
 
@@ -314,9 +354,7 @@ void Player::Move() {
 					turntimer_ = 0.7f;
 				}
 			}
-			velocity_.x += accelerration.x;
-			velocity_.y += accelerration.y;
-			velocity_.z += accelerration.z;
+			velocity_ += accelerration;
 
 			velocity_.x = std::clamp(velocity_.x, -kLimitRunSpeed, kLimitRunSpeed);
 
