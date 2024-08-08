@@ -377,17 +377,11 @@ void Player::Move() {
 		}
 
 		if (Input::GetInstance()->PushKey(DIK_UP)) {
-			velocity_ += Vector3(0, kJumpAcceleration / 60.0f, 0); //
-			                                                       // velocity_.x += 0;
-			// velocity_.y += kJumpAcceleration;
-			// velocity_.z += 0;
+			velocity_ += Vector3(0, kJumpAcceleration / 60.0f, 0);
 		}
 	} else {
 		velocity_ += Vector3(0, -kGravityAcceleration / 60.0f, 0); //
-		// velocity_.x += 0;
-		// velocity_.y += -kGravityAcceleration;
-		// velocity_.z += 0;
-
+		
 		velocity_.y = std::max(velocity_.y, -kLimitFallSpeed);
 
 		landing = false;
@@ -399,7 +393,7 @@ void Player::Move() {
 		}
 	}
 
-	worldtransform_.translation_ += velocity_;
+	//worldtransform_.translation_ += velocity_;
 	// worldtransform_.translation_.x += velocity_.x;
 	// worldtransform_.translation_.y += velocity_.y;
 	// worldtransform_.translation_.z += velocity_.z;
