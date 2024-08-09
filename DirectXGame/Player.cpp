@@ -24,7 +24,7 @@ void Player::Update() {
 
 	Move();
 
-	CollisionMapInfo collisionMapInfo;
+	CollisionMapInfo collisionMapInfo = {};
 
 	collisionMapInfo.move = velocity_;
 
@@ -65,7 +65,7 @@ void Player::CheckMapCollisionUp(CollisionMapInfo& info) {
 	std::array<Vector3, kNumCorner> positionsNew;
 
 	for (uint32_t i = 0; i < positionsNew.size(); ++i) {
-		positionsNew[i] = CornerPosition(worldtransform_.translation_ + info.move, static_cast<Corner>(i));
+		positionsNew[i] = CornerPosition(worldtransform_.translation_  + info.move, static_cast<Corner>(i));
 	}
 
 	MapChipType mapChipType;
@@ -95,7 +95,7 @@ void Player::CheckMapCollisionUp(CollisionMapInfo& info) {
 		MapChipField::IndexSet indexSetNow;
 
 		indexSetNow = mapChipField_->GetMapChipIndexSetByPosition(worldtransform_.translation_ + Vector3(0, +kHeight / 2.0f, 0));
-		if (indexSetNow.xIndex != indexSet.xIndex)
+		if (indexSetNow.yIndex != indexSet.yIndex)
 		{
 			indexSet = mapChipField_->GetMapChipIndexSetByPosition(worldtransform_.translation_ + info.move + Vector3(0, +kHeight / 2.0f, 0));
 
@@ -145,7 +145,7 @@ void Player::CheckMapCollisionDown(CollisionMapInfo& info) {
 		MapChipField::IndexSet indexSetNow;
 
 		indexSetNow = mapChipField_->GetMapChipIndexSetByPosition(worldtransform_.translation_ + Vector3(0, -kHeight / 2.0f, 0));
-		if (indexSetNow.xIndex != indexSet.xIndex)
+		if (indexSetNow.yIndex != indexSet.yIndex)
 		{
 			indexSet = mapChipField_->GetMapChipIndexSetByPosition(worldtransform_.translation_ + info.move + Vector3(0, -kHeight / 2.0f, 0));
 
@@ -300,11 +300,12 @@ void Player::UpdateOnGround(const CollisionMapInfo& info) {
 	else
 	{
 		if (info.landing) {
-			onGround_ = true;
 
 			velocity_.x *= (1.0f - kAttenuationLanding);
 
 			velocity_.y = 0.0f;
+
+			onGround_ = true;
 		}
 	}
 
@@ -383,14 +384,6 @@ void Player::Move() {
 		velocity_ += Vector3(0, -kGravityAcceleration / 60.0f, 0); //
 		
 		velocity_.y = std::max(velocity_.y, -kLimitFallSpeed);
-
-		landing = false;
-
-		if (velocity_.y < 0) {
-			if (worldtransform_.translation_.y <= 1.0f) {
-				landing = true;
-			}
-		}
 	}
 
 	//worldtransform_.translation_ += velocity_;
