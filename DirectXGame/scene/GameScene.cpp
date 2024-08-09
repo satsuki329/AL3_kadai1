@@ -2,15 +2,19 @@
 #include "MathUtilityForText.h"
 #include "TextureManager.h"
 #include <cassert>
+#include <cstdint>
 
 GameScene::GameScene() {}
 
 GameScene::~GameScene() {
 	delete model_;
+	delete modelBlock_;
+	delete modelEnemy_;
 
 	for (std::vector<WorldTransform*>& worldTransformBlockLine : worldTransformBlocks_) {
 		for (WorldTransform* worldTransformBlock : worldTransformBlockLine) {
 			delete worldTransformBlock;
+			worldTransformBlock = nullptr;
 		}
 	}
 
@@ -20,6 +24,8 @@ GameScene::~GameScene() {
 	delete modelSkydome_;
 	delete mapChipField_;
 	delete Cameracontroller;
+	delete enemy_;
+	delete player_;
 }
 
 void GameScene::Initialize() {
@@ -34,6 +40,7 @@ void GameScene::Initialize() {
 	//textureHandle_ = TextureManager::Load("block.jpg");
 	model_ = Model::Create();
 	modelBlock_ = Model::CreateFromOBJ("block",true);
+	modelEnemy_ = Model::CreateFromOBJ("enemy", true);
 	// ワールドトランスフォームの初期化
 	worldTransform_.Initialize();
 	// ビュープロジェクションの初期化
@@ -77,6 +84,11 @@ void GameScene::Initialize() {
 
 	CameraController::Rect cameraArea = {12.0f, 100 - 12.0f, 6.0f, 6.0f};
 	Cameracontroller->SetMovableArea(cameraArea);
+
+	enemy_ = new Enemy();
+	Vector3 enemyPosition = mapChipField_->GetMapChipPositionByIndex(14, 18);
+
+	enemy_->Initialize(modelEnemy_,&viewProjection_, Positinemyon);
 }
 
 void GameScene::GenerateBlocks() {
@@ -138,6 +150,8 @@ void GameScene::Update() {
 	// 自キャラの更新
 	player_->Update();
 
+	enemy_->Update();
+
 	Skydome_->Update();
 
 
@@ -178,10 +192,14 @@ void GameScene::Draw() {
 	// 3Dオブジェクト描画前処理
 	Model::PreDraw(commandList);
 
-	/// <summary>
 	/// ここに3Dオブジェクトの描画処理を追加できる
 	/// </summary>
 	// 3Dモデル描画
+
+	// 3Dモデル描画
+	modelSkydome_->Draw(worldTransformSkydome_, viewProjection_);
+	/// <summary>
+
 	model_->Draw(worldTransform_, viewProjection_,textureHandle_);
 
 	// 縦横ブロック描画
@@ -193,13 +211,13 @@ void GameScene::Draw() {
 			modelBlock_->Draw(*worldTransformBlockYoko, viewProjection_);
 		}
 	}
-
+	
+	
 	// 自キャラの描画
 	player_->Draw();
 
-	// 3Dモデル描画
-	modelSkydome_->Draw(worldTransformSkydome_, viewProjection_);
-	// 自キャラの描画
+	enemy_->Draw();
+
 	// Skydome_->Draw();
 
 	// 3Dオブジェクト描画後処理
