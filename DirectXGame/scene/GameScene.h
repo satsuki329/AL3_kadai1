@@ -3,6 +3,7 @@
 #include "Audio.h"
 #include "CameraController.h"
 #include "DebugCamera.h"
+#include "DeathParticlles.h"
 #include "DirectXCommon.h"
 #include "Enemy.h"
 #include "Input.h"
@@ -49,6 +50,12 @@ public: // メンバ関数
 	void GenerateBlocks();
 
 private: // メンバ変数
+	enum class Phase
+	{
+		kPlay,
+		kDeath,
+	};
+
 	DirectXCommon* dxCommon_ = nullptr;
 	Input* input_ = nullptr;
 	Audio* audio_ = nullptr;
@@ -56,6 +63,7 @@ private: // メンバ変数
 	/// <summary>
 	/// ゲームシーン用
 	/// </summary>
+	
 
 	// テクスチャハンドル
 	uint32_t textureHandle_ = 0;
@@ -63,6 +71,7 @@ private: // メンバ変数
 	Model* model_ = nullptr;
 	Model* modelBlock_ = nullptr;
 	Model* modelEnemy_ = nullptr;
+	Model* modelDeathParticle_ = nullptr;
 	//Model* modelCameracontroller = nullptr;
 	// ワールドトランスフォーム
 	WorldTransform worldTransform_;
@@ -90,6 +99,16 @@ private: // メンバ変数
 	CameraController* Cameracontroller = nullptr;
 
 	std::list<Enemy*> enemies_;
+
+	Phase phase_;
+
+	DeathParticles* deathParticles_ = nullptr;
+
+	void ChangePhase();
+
+	void UpdateCamera();
+
+	void UpdateBlocks();
 
 	void CheckAllCollisions();
 };
