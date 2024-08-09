@@ -8,6 +8,7 @@
 #include "Matrix4x4.h"
 #include "Vector3.h"
 #include "MathUtilityForText.h"
+#include "AABB.h"
 
 // 円周率
 const float PI = 3.141592654f;
@@ -39,4 +40,5 @@ Matrix4x4& operator*=(Matrix4x4& lhm, const Matrix4x4& rhm);
 
 // 2項演算子オーバーロード
 Matrix4x4 operator*(const Matrix4x4& m1, const Matrix4x4& m2);
-#pragma once
+
+bool IsCollision(const AABB& aabb1, const AABB& aabb2);

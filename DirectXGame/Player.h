@@ -1,10 +1,13 @@
 #pragma once
 
+#include "AABB.h"
 #include "Model.h"
 #include "ViewProjection.h"
 #include "WorldTransform.h"
 
 class MapChipField;
+
+class Enemy;
 
 class Player {
 
@@ -28,6 +31,12 @@ public:
 	void Update();
 
 	void Draw();
+
+	Vector3 GetWorldPosition();
+
+	AABB GetAABB();
+
+	void OnCollision(const Enemy* enemy);
 
 	void SetMapChipField(MapChipField* mapChipField) { mapChipField_ = mapChipField; }
 

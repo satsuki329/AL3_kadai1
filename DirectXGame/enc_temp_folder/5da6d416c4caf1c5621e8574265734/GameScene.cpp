@@ -59,7 +59,7 @@ void GameScene::Initialize() {
 
 	player_ = new Player();
 
-	Vector3 playerPosition = mapChipField_->GetMapChipPositionByIndex(3, 16);
+	Vector3 playerPosition = mapChipField_->GetMapChipPositionByIndex(1, 16);
 
 	// 自キャラの初期化
 	player_->Initialize( &viewProjection_, playerPosition);

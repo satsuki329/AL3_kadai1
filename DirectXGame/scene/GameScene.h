@@ -14,6 +14,7 @@
 #include "WorldTransform.h"
 #include "skydome.h"
 #include <vector>
+#include <list>
 
 /// <summary>
 /// ゲームシーン
@@ -71,8 +72,6 @@ private: // メンバ変数
 	// 自キャラ
 	Player* player_ = nullptr;
 
-	Enemy* enemy_ = nullptr;
-
 	// 縦横ブロック配列
 	std::vector<std::vector<WorldTransform*>> worldTransformBlocks_;
 
@@ -89,4 +88,8 @@ private: // メンバ変数
 	MapChipField* mapChipField_;
 
 	CameraController* Cameracontroller = nullptr;
+
+	std::list<Enemy*> enemies_;
+
+	void CheckAllCollisions();
 };
