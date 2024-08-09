@@ -88,7 +88,7 @@ void GameScene::Initialize() {
 	enemy_ = new Enemy();
 	Vector3 enemyPosition = mapChipField_->GetMapChipPositionByIndex(14, 18);
 
-	enemy_->Initialize(modelEnemy_,&viewProjection_, Positinemyon);
+	enemy_->Initialize(modelEnemy_,&viewProjection_, enemyPosition);
 }
 
 void GameScene::GenerateBlocks() {

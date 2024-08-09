@@ -4,8 +4,7 @@
 #include <numbers>
 
 void Enemy::Initialize(Model* model, ViewProjection* viewProjection, const Vector3& position) { 
-	assert(model_); 
-
+	
 	model_ = model;
 	worldTransform_.Initialize();
 	worldTransform_.translation_ = position;
