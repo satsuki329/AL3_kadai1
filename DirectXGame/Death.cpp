@@ -26,7 +26,7 @@ void Death::Update() {
 		counter_ = kDuration;
 		isFinished_ = true;
 	}
-
+	*/
 	for (uint32_t i = 0; i < worldtransforms_.size(); ++i) {
 		Vector3 velocity = {kSpeed, 0, 0};
 
@@ -35,7 +35,7 @@ void Death::Update() {
 		velocity = Transform(velocity, matrixRotation);
 
 		worldtransforms_[i].translation_ += velocity;
-	}*/
+	}
 
 	for (auto& worldTransform : worldtransforms_) {
 		worldTransform.UpdateMatrix();

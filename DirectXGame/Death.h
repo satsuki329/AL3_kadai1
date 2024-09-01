@@ -16,9 +16,9 @@ public:
 
 private:
 	static inline const uint32_t kNumParticles = 8;
-	// static inline const float kDuration = 2.0f;
-	// static inline const float kSpeed = 0.05f;
-	// static inline const float kAngleUnit = 2.0f * std::numbers::pi_v<float> / kNumParticles;
+	static inline const float kDuration = 2.0f;
+	static inline const float kSpeed = 0.05f;
+	static inline const float kAngleUnit = 2.0f * std::numbers::pi_v<float> / kNumParticles;
 
 	Model* model_ = nullptr;
 	std::array<WorldTransform, kNumParticles> worldtransforms_;

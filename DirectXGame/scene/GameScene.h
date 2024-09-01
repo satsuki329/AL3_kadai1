@@ -64,7 +64,7 @@ private: // メンバ変数
 	Model* model_ = nullptr;
 	Model* modelBlock_ = nullptr;
 	Model* modelEnemy_ = nullptr;
-	Model* modeldeath_ = nullptr;
+	Model* modelDeath_ = nullptr;
 	//Model* modelCameracontroller = nullptr;
 	// ワールドトランスフォーム
 	WorldTransform worldTransform_;

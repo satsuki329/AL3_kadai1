@@ -15,7 +15,7 @@ GameScene::~GameScene() {
 	delete model_;
 	delete modelBlock_;
 	delete modelEnemy_;
-	delete modeldeath_;
+	delete modelDeath_;
 
 	for (std::vector<WorldTransform*>& worldTransformBlockLine : worldTransformBlocks_) {
 		for (WorldTransform* worldTransformBlock : worldTransformBlockLine) {
@@ -47,7 +47,7 @@ void GameScene::Initialize() {
 	model_ = Model::Create();
 	modelBlock_ = Model::CreateFromOBJ("block",true);
 	modelEnemy_ = Model::CreateFromOBJ("enemy", true);
-	modeldeath_ = Model::CreateFromOBJ("deathParticle", true);
+	modelDeath_ = Model::CreateFromOBJ("deathParticle", true);
 	// ワールドトランスフォームの初期化
 	worldTransform_.Initialize();
 	// ビュープロジェクションの初期化
@@ -62,12 +62,14 @@ void GameScene::Initialize() {
 
 	player_ = new Player();
 
+	death_ = new Death();
+
 	Vector3 playerPosition = mapChipField_->GetMapChipPositionByIndex(3, 16);
 
 	// 自キャラの初期化
 	player_->Initialize( &viewProjection_, playerPosition);
 
-	death_->Initialize(modelBlock_, &viewProjection_, playerPosition);
+	death_->Initialize(modelDeath_, &viewProjection_, playerPosition);
 
 	// スカイドームの生成
 	modelSkydome_ = Model::CreateFromOBJ("sphere", true);
