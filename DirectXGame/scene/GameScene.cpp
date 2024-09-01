@@ -335,13 +335,13 @@ void GameScene::ChangePhase()
 	case Phase::kPlay:
 		if (player_ -> IsDead())
 		{
-			phase_ = Phase::kDeath;
-
 			const Vector3& deathposition = player_->GetWorldPosition();
 
 			death_ = new Death();
 
 			death_->Initialize(modelDeath_, &viewProjection_, deathposition);
+
+			phase_ = Phase::kDeath;
 		}
 
 		break;
