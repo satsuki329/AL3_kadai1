@@ -2,6 +2,7 @@
 
 #include "Audio.h"
 #include "CameraController.h"
+#include "Death.h"
 #include "DebugCamera.h"
 #include "DirectXCommon.h"
 #include "Enemy.h"
@@ -13,9 +14,8 @@
 #include "ViewProjection.h"
 #include "WorldTransform.h"
 #include "skydome.h"
-#include "Death.h"
-#include <vector>
 #include <list>
+#include <vector>
 
 /// <summary>
 /// ゲームシーン
@@ -49,7 +49,14 @@ public: // メンバ関数
 
 	void GenerateBlocks();
 
+	void ChangePhase();
+
 private: // メンバ変数
+	enum class Phase {
+		kPlay,
+		kDeath,
+	};
+
 	DirectXCommon* dxCommon_ = nullptr;
 	Input* input_ = nullptr;
 	Audio* audio_ = nullptr;
@@ -65,8 +72,8 @@ private: // メンバ変数
 	Model* modelBlock_ = nullptr;
 	Model* modelEnemy_ = nullptr;
 	Model* modelDeath_ = nullptr;
-	//Model* modelCameracontroller = nullptr;
-	// ワールドトランスフォーム
+	// Model* modelCameracontroller = nullptr;
+	//  ワールドトランスフォーム
 	WorldTransform worldTransform_;
 	// ビュープロジェクション
 	ViewProjection viewProjection_;
@@ -96,4 +103,6 @@ private: // メンバ変数
 	std::list<Enemy*> enemies_;
 
 	void CheckAllCollisions();
+
+	Phase phase_;
 };
