@@ -15,18 +15,21 @@ void Death::Initialize(Model* model, ViewProjection* viewProjection, const Vecto
 	}
 
 	viewProjection_ = viewProjection;
-	//objectColor_.Initialize();
-	//color_ = {1, 1, 1, 1};
+	objectColor_.Initialize();
+	color_ = {1, 1, 1, 1};
 }
 
 void Death::Update() {
-	//counter_ += 1.0f / 60.0f;
+	if (isFinished_) {
+		return;
+	}
+	counter_ += 1.0f / 60.0f;
 
-	/* if (counter_ >= kDuration) {
+	if (counter_ >= kDuration) {
 		counter_ = kDuration;
 		isFinished_ = true;
 	}
-	*/
+	
 	for (uint32_t i = 0; i < worldtransforms_.size(); ++i) {
 		Vector3 velocity = {kSpeed, 0, 0};
 
@@ -41,17 +44,17 @@ void Death::Update() {
 		worldTransform.UpdateMatrix();
 	}
 
-	//color_.w = std::max(0.0f, 1.0f - counter_ / kDuration);
-	//objectColor_.SetColor(color_);
-	//objectColor_.TransferMatrix();
+	color_.w = std::max(0.0f, 1.0f - counter_ / kDuration);
+	objectColor_.SetColor(color_);
+	objectColor_.TransferMatrix();
 }
 
 void Death::Draw() {
-	/* if (isFinished_) {
+	if (isFinished_) {
 		return;
-	}*/
+	}
 
 	for (auto& worldTransform : worldtransforms_) {
-		model_->Draw(worldTransform, *viewProjection_); //, &objectColor_);
+		model_->Draw(worldTransform, *viewProjection_, &objectColor_);
 	}
 }

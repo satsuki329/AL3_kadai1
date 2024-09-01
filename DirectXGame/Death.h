@@ -23,8 +23,8 @@ private:
 	Model* model_ = nullptr;
 	std::array<WorldTransform, kNumParticles> worldtransforms_;
 	ViewProjection* viewProjection_ = nullptr;
-	// bool isFinished_ = false;
-	// float counter_ = 0.0f;
-	// ObjectColor objectColor_;
-	// Vector4 color_;
+	bool isFinished_ = false;
+	float counter_ = 0.0f;
+	ObjectColor objectColor_;
+	Vector4 color_;
 };
