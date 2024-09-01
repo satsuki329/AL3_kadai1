@@ -48,6 +48,10 @@ public:
 
 	Vector3 CornerPosition(const Vector3& center, Corner corner);
 
+	bool isDead_ = false;
+
+	bool IsDead() const { return isDead_; }
+
 private:
 	struct CollisionMapInfo {
 		bool ceiling = false;
@@ -99,4 +103,6 @@ private:
 	void CheckMapCollisionRight(CollisionMapInfo& info);
 
 	void UpdateOnGround(const CollisionMapInfo& info);
+
+	
 };

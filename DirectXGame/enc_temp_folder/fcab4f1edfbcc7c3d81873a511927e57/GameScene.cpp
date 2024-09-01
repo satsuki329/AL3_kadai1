@@ -333,7 +333,7 @@ void GameScene::ChangePhase()
 {
 	switch (phase_) {
 	case Phase::kPlay:
-		if (player_ -> IsDead() ==)
+		if (player_ -> IsDead() == 1)
 		{
 			phase_ = Phase::kDeath;
 
