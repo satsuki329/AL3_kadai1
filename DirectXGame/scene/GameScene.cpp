@@ -15,6 +15,7 @@ GameScene::~GameScene() {
 	delete model_;
 	delete modelBlock_;
 	delete modelEnemy_;
+	delete modeldeath_;
 
 	for (std::vector<WorldTransform*>& worldTransformBlockLine : worldTransformBlocks_) {
 		for (WorldTransform* worldTransformBlock : worldTransformBlockLine) {
@@ -30,6 +31,7 @@ GameScene::~GameScene() {
 	delete mapChipField_;
 	delete Cameracontroller;
 	delete player_;
+	delete death_;
 }
 
 void GameScene::Initialize() {
@@ -45,6 +47,7 @@ void GameScene::Initialize() {
 	model_ = Model::Create();
 	modelBlock_ = Model::CreateFromOBJ("block",true);
 	modelEnemy_ = Model::CreateFromOBJ("enemy", true);
+	modeldeath_ = Model::CreateFromOBJ("deathParticle", true);
 	// ワールドトランスフォームの初期化
 	worldTransform_.Initialize();
 	// ビュープロジェクションの初期化
@@ -63,6 +66,8 @@ void GameScene::Initialize() {
 
 	// 自キャラの初期化
 	player_->Initialize( &viewProjection_, playerPosition);
+
+	death_->Initialize(modelBlock_, &viewProjection_, playerPosition);
 
 	// スカイドームの生成
 	modelSkydome_ = Model::CreateFromOBJ("sphere", true);
@@ -161,6 +166,10 @@ void GameScene::Update() {
 
 	Skydome_->Update();
 
+	if (death_)
+	{
+		death_->Update();
+	}
 
 	// 縦横ブロック更新
 	for (std::vector<WorldTransform*> worldTransformBlockTate : worldTransformBlocks_) {
@@ -227,6 +236,10 @@ void GameScene::Draw() {
 
 	for (Enemy* enemy : enemies_) {
 		enemy->Draw();
+	}
+
+	if (death_) {
+		death_->Draw();
 	}
 
 	// Skydome_->Draw();

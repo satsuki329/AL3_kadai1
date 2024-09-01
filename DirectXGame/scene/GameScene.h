@@ -13,6 +13,7 @@
 #include "ViewProjection.h"
 #include "WorldTransform.h"
 #include "skydome.h"
+#include "Death.h"
 #include <vector>
 #include <list>
 
@@ -63,6 +64,7 @@ private: // メンバ変数
 	Model* model_ = nullptr;
 	Model* modelBlock_ = nullptr;
 	Model* modelEnemy_ = nullptr;
+	Model* modeldeath_ = nullptr;
 	//Model* modelCameracontroller = nullptr;
 	// ワールドトランスフォーム
 	WorldTransform worldTransform_;
@@ -71,6 +73,8 @@ private: // メンバ変数
 
 	// 自キャラ
 	Player* player_ = nullptr;
+
+	Death* death_ = nullptr;
 
 	// 縦横ブロック配列
 	std::vector<std::vector<WorldTransform*>> worldTransformBlocks_;

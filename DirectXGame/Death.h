@@ -6,7 +6,7 @@
 #include <array>
 #include <numbers>
 
-class DeathParticles {
+class Death {
 public:
 	void Initialize(Model* model, ViewProjection* viewProjection, const Vector3& position);
 
