@@ -48,8 +48,6 @@ public:
 
 	Vector3 CornerPosition(const Vector3& center, Corner corner);
 
-	bool isDead_ = false;
-
 	bool IsDead() const { return isDead_; }
 
 private:
@@ -104,5 +102,5 @@ private:
 
 	void UpdateOnGround(const CollisionMapInfo& info);
 
-	
+	bool isDead_ = false;
 };

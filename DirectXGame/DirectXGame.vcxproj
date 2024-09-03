@@ -159,6 +159,7 @@
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="AABB.h" />
     <ClInclude Include="Death.h" />
+    <ClInclude Include="TitleScene.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\shaders\TerrainPS.hlsl">

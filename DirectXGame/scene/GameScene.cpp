@@ -176,6 +176,8 @@ void GameScene::Update() {
 
 		CheckAllCollisions();
 
+		ChangePhase();
+
 		break;
 
 
@@ -278,7 +280,12 @@ void GameScene::Draw() {
 	
 	
 	// 自キャラの描画
-	player_->Draw();
+	
+	if (!player_->IsDead())
+	{
+		player_->Draw();
+	}
+		
 
 	for (Enemy* enemy : enemies_) {
 		enemy->Draw();
