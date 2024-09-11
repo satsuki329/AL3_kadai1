@@ -183,6 +183,11 @@ void GameScene::Update() {
 
 	case Phase::kDeath:
 
+		if (death_ && death_->IsFinished())
+		{
+			finished_ = true;
+		}
+
 		if (isDebugCameraActive_) {
 			// デバッグカメラの更新
 			debugCamera_->Update();

@@ -119,6 +119,7 @@
     <ClCompile Include="CameraController.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Death.cpp" />
+    <ClCompile Include="Title.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="2d\ImGuiManager.h" />

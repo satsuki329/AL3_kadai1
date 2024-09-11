@@ -51,6 +51,8 @@ public: // メンバ関数
 
 	void ChangePhase();
 
+	bool IsFinished() const { return finished_; }
+
 private: // メンバ変数
 
 	enum class Phase
@@ -107,4 +109,6 @@ private: // メンバ変数
 	void CheckAllCollisions();
 
 	Phase phase_;
+
+	bool finished_ = false;
 };

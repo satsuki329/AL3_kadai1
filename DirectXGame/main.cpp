@@ -6,7 +6,76 @@
 #include "PrimitiveDrawer.h"
 #include "TextureManager.h"
 #include "WinApp.h"
+#include "TitleScene.h"
 
+GameScene* gameScene = nullptr;
+Title* title = nullptr;
+
+enum class Scene
+{
+	kUnknown = 0,
+
+	kTitle,
+	kGame,
+};
+
+Scene scene = Scene::kTitle;
+
+void ChangeScene()
+{ 
+	switch (scene)
+	{ 
+		case Scene::kTitle:
+			if (title->IsFinished())
+			{
+			    scene = Scene::kGame;
+			    delete title;
+			    title = nullptr;
+			    gameScene = new GameScene;
+			    gameScene->Initialize();
+		    }
+
+			break;
+
+		case Scene::kGame:
+			if (gameScene->IsFinished())
+			{
+			    scene = Scene::kTitle;
+			    delete gameScene;
+			    gameScene = nullptr;
+			    title = new Title;
+			    title->Initialize();
+			}
+
+			break;
+	}
+
+}
+
+void UpdateScene()
+{
+
+	switch (scene)
+	{ case Scene::kTitle:
+		title->Update();
+		break;
+	case Scene::kGame:
+		gameScene->Update();
+		break;
+	}
+}
+
+void DrawScene() {
+
+	switch (scene) {
+	case Scene::kTitle:
+		title->Draw();
+		break;
+	case Scene::kGame:
+		gameScene->Draw();
+		break;
+	}
+}
 
     // Windowsアプリでのエントリーポイント(main関数)
     int WINAPI
@@ -18,7 +87,6 @@
 	Audio* audio = nullptr;
 	AxisIndicator* axisIndicator = nullptr;
 	PrimitiveDrawer* primitiveDrawer = nullptr;
-	GameScene* gameScene = nullptr;
 
 	// ゲームウィンドウの作成
 	win = WinApp::GetInstance();
@@ -60,8 +128,13 @@
 #pragma endregion
 
 	// ゲームシーンの初期化
-	gameScene = new GameScene();
-	gameScene->Initialize();
+	/* gameScene = new GameScene();
+	gameScene->Initialize();*/
+
+	scene = Scene::kTitle;
+	scene = Scene::kTitle;
+	title = new Title;
+	title->Initialize();
 
 	// メインループ
 	while (true) {
@@ -74,8 +147,10 @@
 		imguiManager->Begin();
 		// 入力関連の毎フレーム処理
 		input->Update();
+
+		ChangeScene();
 		// ゲームシーンの毎フレーム処理
-		gameScene->Update();
+		UpdateScene();
 		// 軸表示の更新
 		axisIndicator->Update();
 		// ImGui受付終了
@@ -84,7 +159,7 @@
 		// 描画開始
 		dxCommon->PreDraw();
 		// ゲームシーンの描画
-		gameScene->Draw();
+		DrawScene();
 		// 軸表示の描画
 		axisIndicator->Draw();
 		// プリミティブ描画のリセット
@@ -96,6 +171,7 @@
 	}
 
 	// 各種解放
+	delete title;
 	delete gameScene;
 	// 3Dモデル解放
 	Model::StaticFinalize();
